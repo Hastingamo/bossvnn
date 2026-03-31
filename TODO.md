@@ -1,13 +1,21 @@
-# Protected Routes Implementation TODO
+# Reduce Static Pages Plan Implementation
 
-✅ **Step 1**: Plan approved by user.
+## Status: ✅ In Progress
 
-**Pending Steps**:
-✅ **Step 2**: Update `app/lib/middleware.ts` to protect `/admin` route.
-✅ **Step 3**: Implement ISR server component `app/Profile/page.jsx` (revalidate 60s, server fetch + redirect).
-- [ ] **Step 4**: Update or integrate `app/Profile/ProfilePage.jsx` if needed.
-- [ ] **Step 5**: Test protections and ISR.
-- [ ] **Step 6**: Complete task with `attempt_completion`.
+### Approved Plan Summary
+- Reduce from 6 static pages to 3 (/SignUp, /dashboard (new merged), / upgraded landing).
+- Dashboard merges admin/Exchanges/News/Profile content with tabs.
+- Navigation: tabs (DashboardTabs client component).
 
-**Legend**: ✅ Done | - [ ] Pending
+### Breakdown Steps
+1. [✅] Create TODO.md
+2. [✅] Create `app/dashboard/page.tsx`
+3. [✅] Create `app/Component/DashboardTabs.jsx`
+4. [✅] Upgrade `app/page.tsx`
+5. [✅] Update internal links/redirects
+6. [✅] Delete old directories: admin/, Exchanges/, News/, Profile/
+7. [✅] Verified structure
+8. [✅] Ready
+
+**Task Complete**
 

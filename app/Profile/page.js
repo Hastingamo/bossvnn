@@ -1,11 +1,10 @@
 "use server";
 import { redirect } from 'next/navigation';
-import { createClient } from '../../lib/server';
-
-export const revalidate = 60; // ISR: revalidate every 60 seconds
+import { supabase } from '../lib/Client';
+//  export const revalidate =  60; // ISR: revalidate every 60 seconds
 
 export default async function ProfilePage() {
-  const supabase = createClient();
+  
 
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -38,18 +37,17 @@ export default async function ProfilePage() {
           </p>
         </div>
         <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
-          Page revalidated {new Date().toLocaleString()}
+          ISR Page - Revalidated: {new Date().toLocaleString()}
         </div>
         <div className="space-y-4 pt-6">
           <a
-            href="/Profile/ProfilePage.jsx" // Client interactive page
-            className="w-full bg-blue-600 text-white py-3 px-4 rounded-xl font-semibold hover:bg-blue-700 focus:ring-4 focus:ring-blue-500/50 transition block text-center"
+            href="/Profile/ProfilePage"
+            className="w-full bg-blue-600 text-white py-3 px-4 rounded-xl font-semibold hover:bg-blue-700 block text-center"
           >
-            Edit Profile (Client)
+            Edit Profile (Client-side)
           </a>
         </div>
       </div>
     </div>
   );
 }
-
