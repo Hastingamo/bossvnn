@@ -6,7 +6,7 @@ import community from "../Component/community.json";
 import Link from "next/link";
 import Image from "next/image";
 import { redirect } from 'next/navigation';
-import { supabase } from '../lib/Client';
+import { createClient } from '../lib/server';
 
 const container = {
 hidden: { opacity: 0 },
@@ -22,6 +22,7 @@ visible: { opacity: 1, y: 0 }
 };
 
 export default async function Page(){
+  const supabase = await createClient();
       const { data: { user } } = await supabase.auth.getUser();
   
     if (!user) {
