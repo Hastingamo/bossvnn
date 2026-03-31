@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { supabase } from "../lib/Client";
+import { supabase } from "../../lib/Client";
 
 function Page() {
   const [userDetails, setUserDetails] = useState(null);

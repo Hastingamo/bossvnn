@@ -11,12 +11,12 @@ function Page() {
   const [message, setMessage] = useState("");
   const [userName, setUserName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-const [gender, setGender] = useState("");
+  const [gender, setGender] = useState("");
   const [role, setRole] = useState("user");
   const [adminKey, setAdminKey] = useState("");
   const [isSignup, setIsSignup] = useState(true);
-const ADMIN_SECRET_KEY = process.env.NEXT_ADMIN_SECRET_KEY;
-const [loading, setLoading] = useState(false);
+  const ADMIN_SECRET_KEY = process.env.NEXT_ADMIN_SECRET_KEY;
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const toggleMode = () => {
@@ -35,13 +35,11 @@ const [loading, setLoading] = useState(false);
   const isStrongPassword = (pw) =>
     pw.length >= 8 && /[A-Z]/.test(pw) && /[a-z]/.test(pw);
 
-
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setMessage("");
     setLoading(true);
-
 
     if (!password || password.length < 6) {
       setError("Password must be at least 6 characters");
@@ -76,16 +74,16 @@ const [loading, setLoading] = useState(false);
         setLoading(false);
         return;
       }
-      if (role === 'admin' && !adminKey) {
+      if (role === "admin" && !adminKey) {
         setError("Admin key required for admin role");
         setLoading(false);
         return;
       }
       const { data, error } = await supabase.auth.signUp({
         email: email.toLowerCase(),
-          options: {
-    emailRedirectTo: 'http://localhost:3001/auth/callback',
-  },
+        options: {
+          emailRedirectTo: "http://localhost:3001/auth/callback",
+        },
         password,
         options: {
           data: {
@@ -101,38 +99,36 @@ const [loading, setLoading] = useState(false);
       } else {
         setMessage("Signup successful! Check your email for confirmation.");
         setTimeout(() => {
-          setIsSignup(false)
+          setIsSignup(false);
         }, 2000);
       }
     } else {
       console.log("Email:", email);
-console.log("Email lowered:", email.toLowerCase());
-console.log("Password:", password);
-console.log("Password length:", password?.length);
+      console.log("Email lowered:", email.toLowerCase());
+      console.log("Password:", password);
+      console.log("Password length:", password?.length);
       const { data, error } = await supabase.auth.signInWithPassword({
         email: email.toLowerCase(),
         password,
       });
-const session = await supabase.auth.getSession();
-console.log("Session after login:", session);
+      const session = await supabase.auth.getSession();
+      console.log("Session after login:", session);
 
-// Check if cookies exist
-document.cookie.split(";").forEach(c => {
-  if (c.trim().startsWith("sb-")) {
-    console.log("Found sb cookie:", c.trim());
-  }
-});
+      document.cookie.split(";").forEach((c) => {
+        if (c.trim().startsWith("sb-")) {
+          console.log("Found sb cookie:", c.trim());
+        }
+      });
 
       if (error) {
         setError("Error:", error?.message);
         console.log("Error:", error?.message);
-
       } else {
         setMessage("Login successful! Redirecting...");
         console.log(data);
         setTimeout(() => {
           router.refresh();
-          router.push('/Profile');
+          router.push("/Profile");
         }, 2000);
       }
     }
@@ -160,9 +156,7 @@ document.cookie.split(";").forEach(c => {
           <button
             type="button"
             className={`flex-1 py-3 px-4 rounded-full text-sm font-semibold transition-all ${
-              isSignup
-                ? "bg-gradient-to-br from-[#fff3e6] to-[#381932]"
-                : ""
+              isSignup ? "bg-gradient-to-br from-[#fff3e6] to-[#381932]" : ""
             }`}
             onClick={() => setIsSignup(true)}
           >
@@ -171,17 +165,15 @@ document.cookie.split(";").forEach(c => {
           <button
             type="button"
             className={`flex-1 py-3 px-4 rounded-full text-sm font-semibold transition-all ${
-              !isSignup
-                ? "bg-gradient-to-br from-[#fff3e6] to-[#381932]"
-                : ""
+              !isSignup ? "bg-gradient-to-br from-[#fff3e6] to-[#381932]" : ""
             }`}
             onClick={() => setIsSignup(false)}
           >
             Log In
           </button>
         </div>
-
-        <form onSubmit={handleFormSubmit} className="space-y-4">
+            <div className="">
+                 <form onSubmit={handleFormSubmit} className="space-y-4 ">
           {isSignup && (
             <div>
               <label
@@ -301,7 +293,7 @@ document.cookie.split(";").forEach(c => {
                   <option value="admin">Admin</option>
                 </select>
               </div>
-              {role === 'admin' && (
+              {role === "admin" && (
                 <div>
                   <label
                     htmlFor="adminKey"
@@ -318,7 +310,9 @@ document.cookie.split(";").forEach(c => {
                     className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                     required
                   />
-                  <p className="text-xs text-gray-500 mt-1">Key: ADMIN_SECRET_KEY </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Key: ADMIN_SECRET_KEY{" "}
+                  </p>
                 </div>
               )}
             </>
@@ -380,6 +374,8 @@ document.cookie.split(";").forEach(c => {
             </button>
           </div>
         </form>
+            </div>
+     
       </motion.div>
     </div>
   );

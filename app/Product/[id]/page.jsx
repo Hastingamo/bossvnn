@@ -3,6 +3,8 @@ import React from 'react'
 
 export default async function page() {
   return (
-    <div>page</div>
+    <div>
+        <h1> write  a review for this product</h1>
+    </div>
   )
 }

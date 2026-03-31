@@ -42,7 +42,7 @@ export default async function ProfilePage() {
         </div>
         <div className="space-y-4 pt-6">
           <a
-            href="/Profile/ProfilePage"
+            href="/Profile/That"
             className="w-full bg-blue-600 text-white py-3 px-4 rounded-xl font-semibold hover:bg-blue-700 block text-center"
           >
             Edit Profile (Client-side)

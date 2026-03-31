@@ -107,8 +107,8 @@ export default function ExchangesContent({ initialCoins }) {
           required
         />
       </div>
-
-      <button
+      <div className="grid grid-cols-2 gap-4">
+            <button
         type="submit"
         className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
       >
@@ -120,6 +120,8 @@ export default function ExchangesContent({ initialCoins }) {
       >
         <Link href="/Exchanges/FromBank">Buy with Bank Transfer</Link>
         </button>
+      </div>
+  
     </form>
   );
 
@@ -216,7 +218,7 @@ export default function ExchangesContent({ initialCoins }) {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="bg-background text-foreground w-full h-fit p-4"
+      className="bg-gradient-to-br from-[#271587E] to-[#f7f7ff] w-full h-fit p-4"
     >
       <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl font-bold mb-10 flex items-center gap-3">
