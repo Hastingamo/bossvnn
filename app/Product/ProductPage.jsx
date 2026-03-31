@@ -19,22 +19,14 @@ export default function ProductPage({initializeCoins}) {
     const [filteredData, setFilteredData] = useState(initializeCoins || []);
     const [loading, setLoading] = useState(false);
       useEffect(() => {
-    const filtered = data.filter((item) => {
-      return (
-        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.symbol.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    });
+    const filtered = (initializeCoins || []).filter(
+      (item) =>
+        item?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item?.symbol?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
     setFilteredData(filtered);
-}, [searchTerm, data]);
-// if(loading) {
-//     return(
-//         <>
-//         <Loader/>
+}, [searchTerm, initializeCoins]);
 
-//         </>
-//     )
-// }
   return (
     <div>
         <div>
@@ -68,9 +60,9 @@ export default function ProductPage({initializeCoins}) {
                   whileHover={{ scale: 1.02 }}
                   key={index}
                   whileInView={{ opacity: 1, y: 0 }}
-                  className="lg:text-[18px]"
+                  className="lg:text-[18px] text-white"
                 >
-                  <Link
+                  <Link 
                     href={`/Product/${item.id}`}
                     className="m-4 p-6 border-2 bg-gradient-to-br from-[#1B3358] to-[#06142E] xl:ml-[2rem] rounded-2xl xl:rounded-[10px] xl:pt-4 xl:pb-4 grid  md:grid-cols-2 lg:p-0 lg:grid-cols-4 xl:grid-cols-6"
                   >

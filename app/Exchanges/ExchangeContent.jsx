@@ -10,6 +10,7 @@ import {
   Coins,
   Loader2
 } from "lucide-react";
+import Link from "next/link";
 
 export default function ExchangesContent({ initialCoins }) {
   const [currency, setCurrency] = useState("");
@@ -113,7 +114,12 @@ export default function ExchangesContent({ initialCoins }) {
       >
         {buttonText}
       </button>
-
+         <button
+        type="submit"
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
+      >
+        <Link href="/Exchanges/FromBank">Buy with Bank Transfer</Link>
+        </button>
     </form>
   );
 

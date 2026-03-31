@@ -37,7 +37,7 @@ function Headerss() {
         <Link href="/News">
           <h1>News</h1>
         </Link>
-        <Link href="/admin">
+        <Link href="/Admin">
         <h1>Admin</h1>
         </Link>
 

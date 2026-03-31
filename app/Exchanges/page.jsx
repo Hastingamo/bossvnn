@@ -2,8 +2,10 @@
 import React from "react";
 import ExchangesContent from "./ExchangeContent";
 import { redirect } from 'next/navigation';
-import { supabase } from '../lib/Client';
+import { createClient } from "../lib/server";
+
 export default async function Page() {
+      const supabase = await createClient();
   
     const { data: { user } } = await supabase.auth.getUser();
   

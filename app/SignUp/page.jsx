@@ -105,17 +105,33 @@ const [loading, setLoading] = useState(false);
         }, 2000);
       }
     } else {
+      console.log("Email:", email);
+console.log("Email lowered:", email.toLowerCase());
+console.log("Password:", password);
+console.log("Password length:", password?.length);
       const { data, error } = await supabase.auth.signInWithPassword({
         email: email.toLowerCase(),
         password,
       });
+const session = await supabase.auth.getSession();
+console.log("Session after login:", session);
+
+// Check if cookies exist
+document.cookie.split(";").forEach(c => {
+  if (c.trim().startsWith("sb-")) {
+    console.log("Found sb cookie:", c.trim());
+  }
+});
 
       if (error) {
-        setError(error.message);
+        setError("Error:", error?.message);
+        console.log("Error:", error?.message);
+
       } else {
         setMessage("Login successful! Redirecting...");
         console.log(data);
         setTimeout(() => {
+          router.refresh();
           router.push('/Profile');
         }, 2000);
       }
@@ -342,7 +358,7 @@ const [loading, setLoading] = useState(false);
                   <path
                     fill="none"
                     opacity=".75"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7. 962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   />
                 </svg>
                 <span>Processing...</span>
