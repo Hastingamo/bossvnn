@@ -1,12 +1,9 @@
 "use server";
 import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
-import { supabase as createClient } from '../lib/Client';
+import { createClient } from '../lib/server';
 
 export default async function AdminPage() {
-  const cookieStore = cookies();
-
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient();
 
   const { data: { user } } = await supabase.auth.getUser();
 

@@ -1,4 +1,3 @@
-"use server"
 import React from 'react'
 const container = {
   hidden: { opacity: 0 },
