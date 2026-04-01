@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { supabase } from "../../../lib/Client";
+import { useRouter } from "next/navigation";
 
 export default function ReviewForm({ productId }) {
+    const router = useRouter();
 
 
   const [rating, setRating] = useState(5);
@@ -44,6 +46,8 @@ export default function ReviewForm({ productId }) {
       setMessageType("success");
       setComment("");
       setRating(5);
+            router.refresh();
+
     }
 
     setLoading(false);
