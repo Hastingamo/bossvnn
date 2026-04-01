@@ -82,7 +82,7 @@ function Page() {
       const { data, error } = await supabase.auth.signUp({
         email: email.toLowerCase(),
         options: {
-          emailRedirectTo: "http://localhost:3001/auth/callback",
+          emailRedirectTo: "http://bossvnn.vercel.app/Auth/Callback",
         },
         password,
         options: {

@@ -38,7 +38,6 @@ export default function ReviewForm({ productId }) {
     });
 
     if (error) {
-      console.error(error);
       setMessage("Error submitting review");
       setMessageType("error");
     } else {

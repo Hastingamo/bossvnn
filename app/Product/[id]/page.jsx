@@ -32,9 +32,9 @@ export default async function Page({ params }) {
         View All Reviews
       </Link>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full md:w-3/4">
         <div className="border-2 p-8 shadow-lg rounded-xl bg-white flex flex-col items-center justify-center min-h-[400px]">
-          <p className="text-xl font-semibold mb-4">Product ID: {id}</p>
+          {/* <p className="text-xl font-semibold mb-4">Product ID: {id}</p> */}
           {coin && (
             <div className="text-center">
               <h2 className="text-3xl font-bold mb-2">{coin.name}</h2>
@@ -46,6 +46,11 @@ export default async function Page({ params }) {
               )}
             </div>
           )}
+          <button>
+            <Link href="/Exchanges" className="bg-black text-white px-4 py-2">
+              buy {coin?.name}
+            </Link>
+          </button>
         </div>
         
         <div className="border-2 p-8 shadow-lg rounded-xl bg-white min-h-[400px]">
