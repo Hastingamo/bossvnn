@@ -1,0 +1,13 @@
+
+> bossvnn@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.2:3000
+✓ Ready in 574ms
+
+○ Compiling /News ...
+Finnhub API key is missing. Skipping news fetch.
+ GET /News 200 in 8.0s (next.js: 7.2s, application-code: 765ms)
+ GET /Profile/That 200 in 1492ms (next.js: 1274ms, application-code: 218ms)
