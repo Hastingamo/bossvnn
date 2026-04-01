@@ -1,0 +1,12 @@
+
+> bossvnn@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.2:3000
+✓ Ready in 557ms
+
+○ Compiling /Product/[id] ...
+ GET /Product/bitcoin 200 in 6.9s (next.js: 6.1s, application-code: 840ms)
+ GET /Product/bitcoin/Reviews 200 in 1973ms (next.js: 1820ms, application-code: 153ms)
