@@ -10,18 +10,22 @@ export default async function Page() {
  
 
   try {
-    const response = await fetch(
-      `https://finnhub.io/api/v1/news?category=crypto&token=${apikey}`,
-      {
-        next: { revalidate: 600 } 
+    if (!apikey) {
+      console.warn("Finnhub API key is missing. Skipping news fetch.");
+    } else {
+      const response = await fetch(
+        `https://finnhub.io/api/v1/news?category=crypto&token=${apikey}`,
+        {
+          next: { revalidate: 600 }
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch news");
       }
-    );
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch news");
+      initialNews = await response.json();
     }
-
-    initialNews = await response.json();
   } catch (err) {
     error = err.message;
     console.error(err);
