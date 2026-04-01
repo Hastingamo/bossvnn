@@ -9,6 +9,8 @@ export default function ReviewForm({ productId }) {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState(""); // "success" or "error"
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,7 +21,8 @@ export default function ReviewForm({ productId }) {
     } = await supabase.auth.getUser();
 
     if (!user) {
-      alert("You must be logged in");
+      setMessage("You must be logged in");
+      setMessageType("error");
       setLoading(false);
       return;
     }
@@ -29,37 +32,50 @@ export default function ReviewForm({ productId }) {
       product_id: productId,
       rating,
       comment,
-      Date: new Date().toISOString(),
+      created_at: new Date().toISOString(),
     });
 
     if (error) {
       console.error(error);
-      alert("Error submitting review");
+      setMessage("Error submitting review");
+      setMessageType("error");
     } else {
-      alert("Review added!");
+      setMessage("Review added successfully!");
+      setMessageType("success");
       setComment("");
+      setRating(5);
     }
 
     setLoading(false);
   };
 
   return (
-      <div className=" w-3/4 border-2 p-4 shadow-lg justify-center items-center flex  h-screen">
-          <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="w-full max-w-md mx-auto border-2 p-6 shadow-lg rounded-lg">
+        {message && (
+          <div className={`p-3 rounded ${messageType === "success" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"} mb-4`}>
+            {message}
+          </div>
+        )}
+        <form onSubmit={handleSubmit} className="space-y-4">
         {/* <div>
         {[1, 2, 3, 4, 5].map((r) => (
           <div key={r}><h1>Rating: {r}</h1></div>
         ))}
       </div> */}
-      <select
-        value={rating}
-        onChange={(e) => setRating(Number(e.target.value))}
-        className="border p-2"
-      >
-        {[1, 2, 3, 4, 5].map((r) => (
-          <option key={r}>{r}</option>
+      {/* Star Rating */}
+      <div className="flex space-x-1 mb-4">
+        {[1,2,3,4,5].map((star) => (
+          <button
+            key={star}
+            type="button"
+            onClick={() => setRating(star)}
+            className={`text-2xl ${star <= rating ? "text-yellow-400" : "text-gray-300"}`}
+          >
+            ⭐
+          </button>
         ))}
-      </select>
+      </div>
+      <label>Rating: {rating}/5</label>
       <textarea
         value={comment}
         onChange={(e) => setComment(e.target.value)}

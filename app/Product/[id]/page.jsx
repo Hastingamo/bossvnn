@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import React, { useEffect } from "react";
 import ReviewForm from "./Reviews/ReviewForm";
 import ReviewList from "./Reviews/Display";
-// import ReviewList from "./Reviews/page";
+import ReviewsPage from "./Reviews/page";
 
 export default function Page({params}) {
   const { Id: id } = useParams();
@@ -39,8 +39,9 @@ export default function Page({params}) {
         </div>
         <div className="border-2 p-4 shadow-lg justify-center items-center flex  h-screen">
           <h1>Review on the particular Coin</h1>
-          <ReviewForm productId={params.Id} />
-          <ReviewList productId={params.Id} />
+          {/* <ReviewForm productId={params.Id} />
+          <ReviewList productId={params.Id} /> */}
+          <ReviewsPage params={params} />
         </div>
       </div>
     </div>

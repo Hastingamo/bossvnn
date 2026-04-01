@@ -1,26 +1,17 @@
-// // "use cilent";
-// import { createServerClient } from "@supabase/ssr";
-// import { cookies } from "next/headers";
-
-// export default async function ReviewList({productId }) {
-//   const supabase = createServerClient({
-//     cookies,
-//   });
-
-//   const { data: reviews } = await supabase
-//     .from("reviews")
-//     .select("*")
-//     .eq("product_id", productId)
-//     .order("created_at", { ascending: false });
-
-//   return (
-//     <div className="space-y-4 mt-6">
-//       {reviews?.map((review) => (
-//         <div key={review.id} className="border p-3 rounded">
-//           <p>⭐ {review.rating}/5</p>
-//           <p>{review.comment}</p>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// }
+"use server";
+import ReviewForm from "./ReviewForm";
+import ReviewList from "./Display";
+import { useEffect } from "react";
+export default async function ReviewsPage({ params }) {
+    const { id } = params; 
+    useEffect(() => {
+        console.log("Product ID in ReviewsPage:", id);
+    }, [id]);
+  return (
+    <div className="container mx-auto p-8">
+      <h1 className="text-3xl font-bold mb-8">Product Reviews</h1>
+      <ReviewForm productId={params.id} />
+      <ReviewList productId={params.id} />
+    </div>
+  );
+}
