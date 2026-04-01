@@ -103,22 +103,12 @@ function Page() {
         }, 2000);
       }
     } else {
-      console.log("Email:", email);
-      console.log("Email lowered:", email.toLowerCase());
-      console.log("Password:", password);
-      console.log("Password length:", password?.length);
+
       const { data, error } = await supabase.auth.signInWithPassword({
         email: email.toLowerCase(),
         password,
       });
-      const session = await supabase.auth.getSession();
-      console.log("Session after login:", session);
-
-      document.cookie.split(";").forEach((c) => {
-        if (c.trim().startsWith("sb-")) {
-          console.log("Found sb cookie:", c.trim());
-        }
-      });
+ 
 
       if (error) {
         setError("Error:", error?.message);

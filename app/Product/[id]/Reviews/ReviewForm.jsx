@@ -1,13 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { createBrowserClient } from "@supabase/ssr";
+import { supabase } from "../../../lib/Client";
 
 export default function ReviewForm({ productId }) {
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
-  );
+
 
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
@@ -32,6 +29,7 @@ export default function ReviewForm({ productId }) {
       product_id: productId,
       rating,
       comment,
+      Date: new Date().toISOString(),
     });
 
     if (error) {
@@ -46,7 +44,13 @@ export default function ReviewForm({ productId }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className=" w-3/4 border-2 p-4 shadow-lg justify-center items-center flex  h-screen">
+          <form onSubmit={handleSubmit} className="space-y-4">
+        {/* <div>
+        {[1, 2, 3, 4, 5].map((r) => (
+          <div key={r}><h1>Rating: {r}</h1></div>
+        ))}
+      </div> */}
       <select
         value={rating}
         onChange={(e) => setRating(Number(e.target.value))}
@@ -56,7 +60,6 @@ export default function ReviewForm({ productId }) {
           <option key={r}>{r}</option>
         ))}
       </select>
-
       <textarea
         value={comment}
         onChange={(e) => setComment(e.target.value)}
@@ -72,5 +75,7 @@ export default function ReviewForm({ productId }) {
         {loading ? "Submitting..." : "Submit Review"}
       </button>
     </form>
+      </div>
+  
   );
 }
