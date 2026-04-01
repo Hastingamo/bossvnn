@@ -10,6 +10,9 @@ export default async function Page() {
  
 
   try {
+      if (!apikey) {
+      console.warn("Finnhub API key is missing. Skipping news fetch.");
+    } else {
     const response = await fetch(
       `https://finnhub.io/api/v1/news?category=crypto&token=${apikey}`,
       {
@@ -22,6 +25,7 @@ export default async function Page() {
     }
 
     initialNews = await response.json();
+  }
   } catch (err) {
     error = err.message;
     console.error(err);
