@@ -2,7 +2,7 @@
 import ReviewForm from "./ReviewForm";
 import ReviewList from "./Display";
 import { useEffect } from "react";
-export default async function ReviewsPage({ params }) {
+export default  function ReviewsPage({ params }) {
     const { id } = params; 
     useEffect(() => {
         console.log("Product ID in ReviewsPage:", id);
