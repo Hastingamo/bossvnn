@@ -32,8 +32,8 @@ export default async function Page({ params }) {
         View All Reviews
       </Link>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full md:w-3/4">
-        <div className="border-2 p-8 shadow-lg rounded-xl bg-white flex flex-col items-center justify-center min-h-[400px]">
+      <div className="grid grid-cols-1 gap-8 w-full md:w-2/4">
+        <div className="border-2 p-8 shadow-lg rounded-xl bg-white flex flex-col items-center justify-center h-[200px]">
           {/* <p className="text-xl font-semibold mb-4">Product ID: {id}</p> */}
           {coin && (
             <div className="text-center">
@@ -53,7 +53,7 @@ export default async function Page({ params }) {
           </button>
         </div>
         
-        <div className="border-2 p-8 shadow-lg rounded-xl bg-white min-h-[400px]">
+        <div className="border-2 p-8 shadow-lg rounded-xl bg-white h-[400px] overflow-y-hidden">
           <h2 className="text-xl font-bold mb-6 border-b pb-2">Reviews for this Coin</h2>
           <div className="max-h-[600px] overflow-y-auto">
             <ReviewsPage params={params} />
