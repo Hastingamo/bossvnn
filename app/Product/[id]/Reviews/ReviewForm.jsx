@@ -12,7 +12,7 @@ export default function ReviewForm({ productId }) {
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState(""); // "success" or "error"
+  const [messageType, setMessageType] = useState(""); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,12 +60,7 @@ export default function ReviewForm({ productId }) {
           </div>
         )}
         <form onSubmit={handleSubmit} className="space-y-4">
-        {/* <div>
-        {[1, 2, 3, 4, 5].map((r) => (
-          <div key={r}><h1>Rating: {r}</h1></div>
-        ))}
-      </div> */}
-      {/* Star Rating */}
+
       <div className="flex space-x-1 mb-4">
         {[1,2,3,4,5].map((star) => (
           <button
