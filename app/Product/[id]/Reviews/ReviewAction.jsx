@@ -35,7 +35,7 @@ export default function ReviewActions({ review, productId }) {
       .eq("id", review.id);
 
     if (error) {
-      console.error(error);
+      console.log(error);
       setMessage("Error updating review");
       setMessageType("error");
     } else {
