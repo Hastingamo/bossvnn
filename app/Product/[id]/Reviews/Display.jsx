@@ -6,7 +6,12 @@ import ReviewAction from "./ReviewAction";
 export default async function ReviewList({ productId }) {
   const supabase = await createClient();
 
-  const [{ data: reviews }, { data: { user } }] = await Promise.all([
+  const [
+    { data: reviews },
+    {
+      data: { user },
+    },
+  ] = await Promise.all([
     supabase
       .from("reviews")
       .select("*")
@@ -14,6 +19,9 @@ export default async function ReviewList({ productId }) {
       .order("created_at", { ascending: false }),
     supabase.auth.getUser(),
   ]);
+    const { user_metadata = {} } = user;
+
+  const username = user_metadata.username || "User";
 
   const hasReviewed = reviews?.some((review) => review.user_id === user?.id);
 
@@ -37,13 +45,18 @@ export default async function ReviewList({ productId }) {
                 key={review.id}
                 className="p-6 border rounded-lg shadow-sm bg-white"
               >
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                  {username}
+                </h1>{" "}
                 <div className="flex items-center mb-2">
                   <span className="flex">
                     {[...Array(5)].map((_, i) => (
                       <span
                         key={i}
                         className={
-                          i < review.rating ? "text-yellow-400" : "text-gray-300"
+                          i < review.rating
+                            ? "text-yellow-400"
+                            : "text-gray-300"
                         }
                       >
                         ⭐
@@ -58,8 +71,9 @@ export default async function ReviewList({ productId }) {
                 <p className="text-sm text-gray-500 mt-2">
                   {new Date(review.created_at).toLocaleDateString()}
                 </p>
-
-                {review.user_id === user?.id && <ReviewAction review={review} />}
+                {review.user_id === user?.id && (
+                  <ReviewAction review={review} />
+                )}
               </div>
             ))}
           </div>

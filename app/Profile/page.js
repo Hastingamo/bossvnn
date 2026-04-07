@@ -1,7 +1,6 @@
 "use server";
 import { redirect } from 'next/navigation';
 import { createClient } from "../lib/server";
-//  export const revalidate =  60; // ISR: revalidate every 60 seconds
 
 export default async function ProfilePage() {
   

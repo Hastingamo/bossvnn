@@ -30,14 +30,13 @@ export default function ReviewActions({ review, productId }) {
       .update({
         rating,
         comment,
-        updated_at: new Date().toISOString(),
       })
       .eq("id", review.id);
 
     if (error) {
-      console.log(error);
-      setMessage("Error updating review");
-      setMessageType("error");
+    console.log("Supabase error:", error.message, error.details, error.hint, error.code);
+  setMessage(error.message);
+  setMessageType("error");
     } else {
       setMessage("Review updated!");
       setMessageType("success");
@@ -68,7 +67,7 @@ export default function ReviewActions({ review, productId }) {
                 onClick={() => setRating(star)}
                 className={`text-2xl ${star <= rating ? "text-yellow-400" : "text-gray-300"}`}
               >
-                ⭐
+                {star <= rating ? "⭐" : "☆"}
               </button>
             ))}
           </div>

@@ -34,7 +34,6 @@ export default async function Page({ params }) {
 
       <div className="grid grid-cols-1 gap-8 w-full md:w-2/4">
         <div className="border-2 p-8 shadow-lg rounded-xl bg-white flex flex-col items-center justify-center h-[200px]">
-          {/* <p className="text-xl font-semibold mb-4">Product ID: {id}</p> */}
           {coin && (
             <div className="text-center">
               <h2 className="text-3xl font-bold mb-2">{coin.name}</h2>
@@ -53,7 +52,7 @@ export default async function Page({ params }) {
           </button>
         </div>
         
-        <div className="border-2 p-8 shadow-lg rounded-xl bg-white h-[40rem] overflow-y-hidden">
+        <div className="border-2 p-8 shadow-lg rounded-xl bg-white h-fit overflow-y-hidden">
           <h2 className="text-xl font-bold mb-6 border-b pb-2">Reviews for this Coin</h2>
           <div className="max-h-[600px] overflow-y-auto">
             <Revie params={params} />
