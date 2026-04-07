@@ -1,10 +1,9 @@
 "use server";
 
-import {createClient} from "../../../lib/server";
-
+import { createClient } from "../../../lib/server";
+import ReviewAction from "./ReviewAction";
 
 export default async function ReviewList({ productId }) {
- 
   const supabase = await createClient();
 
   const { data: reviews } = await supabase
@@ -21,16 +20,26 @@ export default async function ReviewList({ productId }) {
       ) : (
         <div className="space-y-4">
           {reviews?.map((review) => (
-            <div key={review.id} className="p-6 border rounded-lg shadow-sm bg-white">
+            <div
+              key={review.id}
+              className="p-6 border rounded-lg shadow-sm bg-white"
+            >
               <div className="flex items-center mb-2">
                 <span className="flex">
                   {[...Array(5)].map((_, i) => (
-                    <span key={i} className={i < review.rating ? "text-yellow-400" : "text-gray-300"}>
+                    <span
+                      key={i}
+                      className={
+                        i < review.rating ? "text-yellow-400" : "text-gray-300"
+                      }
+                    >
                       ⭐
                     </span>
                   ))}
                 </span>
-                <span className="ml-2 text-sm text-gray-600">({review.rating}/5)</span>
+                <span className="ml-2 text-sm text-gray-600">
+                  ({review.rating}/5)
+                </span>
               </div>
               <p className="text-gray-900">{review.comment}</p>
               <p className="text-sm text-gray-500 mt-2">
@@ -38,6 +47,7 @@ export default async function ReviewList({ productId }) {
               </p>
             </div>
           ))}
+          {review.user_id === user?.id && <ReviewAction review={review} />}
         </div>
       )}
     </div>

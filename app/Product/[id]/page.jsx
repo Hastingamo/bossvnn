@@ -53,7 +53,7 @@ export default async function Page({ params }) {
           </button>
         </div>
         
-        <div className="border-2 p-8 shadow-lg rounded-xl bg-white h-[400px] overflow-y-hidden">
+        <div className="border-2 p-8 shadow-lg rounded-xl bg-white h-[40rem] overflow-y-hidden">
           <h2 className="text-xl font-bold mb-6 border-b pb-2">Reviews for this Coin</h2>
           <div className="max-h-[600px] overflow-y-auto">
             <ReviewsPage params={params} />
