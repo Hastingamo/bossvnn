@@ -34,7 +34,7 @@ export default async function Page() {
   }
 
   return (
-    <div className="bg-gradient-to-br from-[#271587E] to-[#f7f7ff] min-h-screen">
+    <div className=" bg-background min-h-screen">
       {error && (
         <div className="bg-red-500/10 p-4 border-b border-red-500/20">
           <p className="text-red-500 text-center font-bold">

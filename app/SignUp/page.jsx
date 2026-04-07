@@ -126,7 +126,7 @@ function Page() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#fff3e6] to-[#381932] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 ">
+    <div className="min-h-screen bg-gradient-to-br from-[#fff3e6] to-[#381932] dark:bg-background flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 ">
       <motion.div
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.8 }}
