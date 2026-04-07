@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { supabase } from "@/lib/Client";
+import { supabase } from "../../../lib/Client";
 import { motion } from "framer-motion";
 import { Form, Loader2 } from "lucide-react";
 import Link from "next/link";
