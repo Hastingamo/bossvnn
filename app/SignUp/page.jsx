@@ -126,7 +126,7 @@ function Page() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#fff3e6] to-[#381932] dark:bg-background flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 ">
+    <div className="min-h-screen bg-gradient-to-br from-[#fff3e6] to-[#381932]  flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 ">
       <motion.div
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.8 }}
@@ -137,7 +137,7 @@ function Page() {
           <h1 className="text-3xl font-bold text-center text-gray-900">
             {isSignup ? "Create Account" : "Welcome Back"}
           </h1>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-2 text-center text-sm ">
             {isSignup ? "Sign up to get started" : "Sign in to your account"}
           </p>
         </div>
@@ -148,7 +148,7 @@ function Page() {
             className={`flex-1 py-3 px-4 rounded-full text-sm font-semibold transition-all ${
               isSignup ? "bg-gradient-to-br from-[#fff3e6] to-[#381932]" : ""
             }`}
-            onClick={() => setIsSignup(true)}
+            onClick={() => setIsSignup(false)}
           >
             Sign Up
           </button>
@@ -157,7 +157,7 @@ function Page() {
             className={`flex-1 py-3 px-4 rounded-full text-sm font-semibold transition-all ${
               !isSignup ? "bg-gradient-to-br from-[#fff3e6] to-[#381932]" : ""
             }`}
-            onClick={() => setIsSignup(false)}
+            onClick={() => setIsSignup(true)}
           >
             Log In
           </button>
