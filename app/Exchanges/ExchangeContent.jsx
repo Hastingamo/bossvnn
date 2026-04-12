@@ -125,7 +125,8 @@ export default function ExchangesContent({ initialCoins }) {
     </form>
   );
 
-  const CoinsDataList = () => (
+
+      const CoinsDataList = () => (
     <datalist id="coins-list">
       {coins.slice(0, 50).map((coin) => (
         <option key={coin.id} value={coin.symbol.toUpperCase()}>
@@ -134,8 +135,8 @@ export default function ExchangesContent({ initialCoins }) {
       ))}
     </datalist>
   );
-
   const renderTabContent = () => {
+
     switch (activeTab) {
       case "buy":
         return <Form buttonText="Buy on WhatsApp" action={handleBuy} />;
@@ -251,8 +252,9 @@ export default function ExchangesContent({ initialCoins }) {
                 <Loader2 className="animate-spin text-blue-500" size={48} />
               </div>
             )}
-          
+                                   <CoinsDataList/>
             {renderTabContent()}
+
             
      
           </div>
