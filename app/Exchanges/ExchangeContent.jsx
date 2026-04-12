@@ -38,7 +38,7 @@ export default function ExchangesContent({ initialCoins }) {
     const supportedCoins = coins.map((coin) => coin.symbol.toUpperCase());
 
     if (!supportedCoins.includes(symbol.toUpperCase())) {
-      setError(`Sorry, we do not support ${symbol}.`);
+      setError(`Sorry, we do not support NGN:{symbol}.`);
       return false;
     }
 
@@ -48,24 +48,32 @@ export default function ExchangesContent({ initialCoins }) {
 
   const openWhatsApp = (text) => {
     const message = encodeURIComponent(text);
-    window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
+    window.open(`https://wa.me/NGN:{phone}?text=NGN:{message}`, "_blank");
   };
 
   const handleBuy = () => {
     if (!validateCurrency(currency)) return;
-    openWhatsApp(`Hello, I want to buy ${amount} ${currency}`);
+    openWhatsApp(`Hello, I want to buy NGN:{amount} NGN:{currency}`);
   };
 
   const handleSell = () => {
     if (!validateCurrency(currency)) return;
-    openWhatsApp(`Hello, I want to sell ${amount} ${currency}`);
+    openWhatsApp(`Hello, I want to sell   naira NGN:{amount} nairaNGN:{currency}`);
   };
 
   const handleSwap = () => {
     if (!validateCurrency(fromThisCurrency)) return;
     if (!validateCurrency(toThisCurrency)) return;
-    openWhatsApp(`Hello, I want to exchange ${amount} ${fromThisCurrency} for ${toThisCurrency}`);
+    openWhatsApp(`Hello, I want to exchange NGN:{amount} NGN:{fromThisCurrency} for NGN:{toThisCurrency}`);
   };
+
+   const handleFromBank = () => {
+    localStorage.setItem("fromBankAmount", amount);
+    localStorage.setItem("fromBankCurrency", currency);
+
+  }
+
+
 
   const Form = ({ buttonText, action }) => (
     <form
@@ -115,6 +123,7 @@ export default function ExchangesContent({ initialCoins }) {
         {buttonText}
       </button>
          <button
+         onClick={handleFromBank}
         type="submit"
         className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
       >
