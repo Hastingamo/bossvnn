@@ -38,7 +38,7 @@ export default function ExchangesContent({ initialCoins }) {
     const supportedCoins = coins.map((coin) => coin.symbol.toUpperCase());
 
     if (!supportedCoins.includes(symbol.toUpperCase())) {
-      setError(`Sorry, we do not support NGN:{symbol}.`);
+      setError(`Sorry, we do not support ${symbol}.`);
       return false;
     }
 
@@ -48,31 +48,41 @@ export default function ExchangesContent({ initialCoins }) {
 
   const openWhatsApp = (text) => {
     const message = encodeURIComponent(text);
-    window.open(`https://wa.me/NGN:{phone}?text=NGN:{message}`, "_blank");
+    window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
   };
 
   const handleBuy = () => {
     if (!validateCurrency(currency)) return;
-    openWhatsApp(`Hello, I want to buy NGN:{amount} NGN:{currency}`);
+    openWhatsApp(`Hello, I want to buy ${amount} ${currency}`);
   };
 
   const handleSell = () => {
     if (!validateCurrency(currency)) return;
-    openWhatsApp(`Hello, I want to sell   naira NGN:{amount} nairaNGN:{currency}`);
+    openWhatsApp(`Hello, I want to sell ${amount} ${currency}`);
   };
 
   const handleSwap = () => {
     if (!validateCurrency(fromThisCurrency)) return;
     if (!validateCurrency(toThisCurrency)) return;
-    openWhatsApp(`Hello, I want to exchange NGN:{amount} NGN:{fromThisCurrency} for NGN:{toThisCurrency}`);
+    openWhatsApp(`Hello, I want to exchange ${amount} ${fromThisCurrency} for ${toThisCurrency}`);
   };
 
   const handleFromBank = () => {
-localStorage.setItem("cryptoAmount", JSON.stringify(amount));
+    localStorage.setItem("cryptoAmount", JSON.stringify(amount));
     localStorage.setItem("fromBankCurrency", JSON.stringify(currency));
   };
 
 
+
+  const CoinsDataList = () => (
+    <datalist id="coins-list">
+      {coins.slice(0, 50).map((coin) => (
+        <option key={coin.id} value={coin.symbol.toUpperCase()}>
+          {coin.name}
+        </option>
+      ))}
+    </datalist>
+  );
 
   const Form = ({ buttonText, action }) => (
     <form
@@ -121,27 +131,16 @@ localStorage.setItem("cryptoAmount", JSON.stringify(amount));
       >
         {buttonText}
       </button>
-         <button
-         onClick={handleFromBank}
-        type="submit"
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
-      >
-        <Link href="/Exchanges/FromBank">Buy with Bank Transfer</Link>
-        </button>
+        <Link
+          href="/Exchanges/FromBank"
+          onClick={handleFromBank}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
+        >
+          Buy with Bank Transfer
+        </Link>
       </div>
   
     </form>
-  );
-
-
-      const CoinsDataList = () => (
-    <datalist id="coins-list">
-      {coins.slice(0, 50).map((coin) => (
-        <option key={coin.id} value={coin.symbol.toUpperCase()}>
-          {coin.name}
-        </option>
-      ))}
-    </datalist>
   );
   const renderTabContent = () => {
 
@@ -260,7 +259,7 @@ localStorage.setItem("cryptoAmount", JSON.stringify(amount));
                 <Loader2 className="animate-spin text-blue-500" size={48} />
               </div>
             )}
-                                   <CoinsDataList/>
+                                   {CoinsDataList()}
             {renderTabContent()}
 
             

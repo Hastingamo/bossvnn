@@ -13,16 +13,21 @@ export default function FromBank() {
   const [totalNgn, setTotalNgn] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-  const [currencys, setCurrency] = useState("");
+  const [currency, setCurrency] = useState("");
   const [cryptoAmount, setCryptoAmount] = useState("");
   const router = useRouter();
   const [coin, setCoin] = useState(null);
 
   useEffect(() => {
     const storedAmount = localStorage.getItem("cryptoAmount");
-    const storedCurrency = localStorage.getItem("currency"); // ✅ Must match key in ExchangesContent
-    if (storedAmount) setCryptoAmount(JSON.parse(storedAmount));
-    if (storedCurrency) setCurrency(JSON.parse(storedCurrency));
+    const storedCurrency = localStorage.getItem("fromBankCurrency");
+
+    if (storedAmount || storedCurrency) {
+      setTimeout(() => {
+        if (storedAmount) setCryptoAmount(JSON.parse(storedAmount));
+        if (storedCurrency) setCurrency(JSON.parse(storedCurrency));
+      }, 0);
+    }
   }, []);
 
   const isWalletID = (wID) =>
@@ -32,7 +37,7 @@ export default function FromBank() {
     wAD.length >= 26 && /[A-Z]/.test(wAD) && /[a-z]/.test(wAD);
 
   useEffect(() => {
-    if (!currencys || !cryptoAmount) return;
+    if (!currency || !cryptoAmount) return;
 
     const fetchCoin = async () => {
       try {
@@ -41,7 +46,7 @@ export default function FromBank() {
         );
         const data = await response.json();
         const found = data.find(
-          (c) => c.symbol.toUpperCase() === currencys.toUpperCase() // ✅ Fixed: was `currency`, now `currencys`
+          (c) => c.symbol.toUpperCase() === currency.toUpperCase()
         );
 
         if (found) {
@@ -52,9 +57,9 @@ export default function FromBank() {
             pricePerUnit *
             1650
           ).toFixed(2);
-          setTotalNgn(calculatedNgn); // ✅ Fixed: was broken by inline comment
+          setTotalNgn(calculatedNgn);
         } else {
-          setError("Currency not found: " + currencys);
+          setError("Currency not found: " + currency);
         }
       } catch (err) {
         console.error("Error fetching coin data:", err);
@@ -63,7 +68,7 @@ export default function FromBank() {
     };
 
     fetchCoin();
-  }, [currencys, cryptoAmount]);
+  }, [currency, cryptoAmount]);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -91,8 +96,8 @@ export default function FromBank() {
       user_id: user.id,
       wallet_id: walletId,
       wallet_address: walletAddress,
-      amount: parseFloat(cryptoAmount), // ✅ Fixed: was `amount` (undefined), now `cryptoAmount`
-      currency: currencys,
+      amount: parseFloat(cryptoAmount),
+      currency: currency,
       total_ngn: parseFloat(totalNgn),
       method: "bank",
       status: "pending",
@@ -104,6 +109,9 @@ export default function FromBank() {
       setLoading(false);
       return;
     }
+
+    localStorage.setItem("bankTransferAmount", JSON.stringify(totalNgn));
+    localStorage.setItem("bankTransferCurrency", JSON.stringify(currency));
 
     setMessage("Deposit request created! Redirecting...");
     setWalletId("");
@@ -173,7 +181,7 @@ export default function FromBank() {
                     <>
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-500">Coin</span>
-                        <span className="font-medium">{coin.name} ({currencys.toUpperCase()})</span>
+                        <span className="font-medium">{coin.name} ({currency.toUpperCase()})</span>
                       </div>
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-500">Price per unit</span>
@@ -181,7 +189,7 @@ export default function FromBank() {
                       </div>
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-500">Amount</span>
-                        <span>{cryptoAmount} {currencys.toUpperCase()}</span>
+                        <span>{cryptoAmount} {currency.toUpperCase()}</span>
                       </div>
                       <div className="flex justify-between text-sm font-semibold border-t border-gray-200 pt-1 mt-1">
                         <span>Total</span>
@@ -190,7 +198,7 @@ export default function FromBank() {
                     </>
                   ) : (
                     <span className="text-gray-400 text-sm">
-                      {currencys ? "Fetching price..." : "No currency selected"}
+                      {currency ? "Fetching price..." : "No currency selected"}
                     </span>
                   )}
                 </div>
