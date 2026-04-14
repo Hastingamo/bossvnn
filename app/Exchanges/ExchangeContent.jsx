@@ -67,11 +67,10 @@ export default function ExchangesContent({ initialCoins }) {
     openWhatsApp(`Hello, I want to exchange NGN:{amount} NGN:{fromThisCurrency} for NGN:{toThisCurrency}`);
   };
 
-   const handleFromBank = () => {
-    localStorage.setItem("fromBankAmount", amount);
-    localStorage.setItem("fromBankCurrency", currency);
-
-  }
+  const handleFromBank = () => {
+localStorage.setItem("cryptoAmount", JSON.stringify(amount));
+    localStorage.setItem("fromBankCurrency", JSON.stringify(currency));
+  };
 
 
 
