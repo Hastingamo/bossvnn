@@ -50,6 +50,7 @@ export default function BankTransferPage() {
       className="min-h-screen bg-background p-4 md:p-8 flex items-center justify-center"
     >
       <div className="w-full max-w-2xl bg-card border border-border rounded-3xl shadow-2xl overflow-hidden">
+        {/* Header */}
         <div className="bg-blue-600 p-6 text-white text-center relative">
           <Link 
             href="/Exchanges/FromBank" 
@@ -63,6 +64,7 @@ export default function BankTransferPage() {
         </div>
 
         <div className="p-8 space-y-8">
+          {/* Amount Section */}
           <div className="text-center bg-secondary/20 p-6 rounded-2xl border border-border/50">
             <span className="text-sm text-muted-foreground uppercase tracking-wider font-semibold">Total Amount to Pay</span>
             <div className="text-4xl font-black mt-1 text-foreground">
@@ -75,6 +77,7 @@ export default function BankTransferPage() {
             )}
           </div>
 
+          {/* Bank Details Section */}
           <div className="space-y-4">
             <h3 className="text-lg font-bold flex items-center gap-2">
               <Info size={18} className="text-blue-600" />
@@ -106,6 +109,7 @@ export default function BankTransferPage() {
             </div>
           </div>
 
+          {/* Instructions */}
           <div className="bg-orange-50 dark:bg-orange-900/10 border border-orange-200 dark:border-orange-800/30 p-4 rounded-xl flex gap-4">
             <Clock className="text-orange-500 shrink-0" size={24} />
             <div className="text-sm text-orange-800 dark:text-orange-200">
@@ -118,6 +122,7 @@ export default function BankTransferPage() {
             </div>
           </div>
 
+          {/* Footer Actions */}
           <div className="flex flex-col gap-3">
             <button
               onClick={() => router.push("/Profile")}
