@@ -107,7 +107,7 @@ export default function FromBank() {
       user_id: user.id,
       wallet_id: walletId,
       wallet_address: walletAddress,
-      amount: parseFloat(cryptoAmount),
+      amount: parseFloat(totalNgn),
       currency: currency,
       total_ngn: parseFloat(totalNgn),
       method: "bank",
