@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "../lib/Client";
 import { usePathname, useRouter } from "next/navigation";
+// import { console } from "inspector";
 
 function Page() {
   const [email, setEmail] = useState("");
@@ -15,7 +16,7 @@ function Page() {
   const [role, setRole] = useState("user");
   const [adminKey, setAdminKey] = useState("");
   const [isSignup, setIsSignup] = useState(true);
-  const ADMIN_SECRET_KEY = process.env.NEXT_ADMIN_SECRET_KEY;
+  const ADMIN_SECRET_KEY = process.env.NEXT_PUBLIC_ADMIN_SECRET_KEY || '' ; // Set env var, move to server for prod
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -30,10 +31,11 @@ function Page() {
     setGender("");
     setAdminKey("");
     setRole("user");
+    setLoading(false);
   };
 
-  const isStrongPassword = (pw) =>
-    pw.length >= 8 && /[A-Z]/.test(pw) && /[a-z]/.test(pw);
+const isStrongPassword = (pw) =>
+    pw.length >= 8 && /[A-Z]/.test(pw) && /[a-z]/.test(pw) && /\d/.test(pw);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -74,18 +76,18 @@ function Page() {
         setLoading(false);
         return;
       }
-      if (role === "admin" && !adminKey) {
-        setError("Admin key required for admin role");
-        setLoading(false);
-        return;
-      }
+   if (role === "admin") {
+  if (!adminKey || adminKey == ADMIN_SECRET_KEY) {
+    setError("Invalid admin key");
+    setLoading(false);
+    return;
+  }
+}
       const { data, error } = await supabase.auth.signUp({
         email: email.toLowerCase(),
-        options: {
-          emailRedirectTo: "http://bossvnn.vercel.app/Auth/Callback",
-        },
         password,
         options: {
+          emailRedirectTo: "http://bossvnn.vercel.app/Auth/Callback",
           data: {
             username: userName,
             gender,
@@ -97,9 +99,9 @@ function Page() {
       if (error) {
         setError(error.message);
       } else {
-        setMessage("Signup successful! Check your email for confirmation.");
+        setMessage("Signup successful! Check your email for confirmation. Redirecting...");
         setTimeout(() => {
-          setIsSignup(false);
+          router.push("/Profile");
         }, 2000);
       }
     } else {
@@ -111,7 +113,7 @@ function Page() {
  
 
       if (error) {
-        setError("Error:", error?.message);
+        setError(error?.message);
         console.log("Error:", error?.message);
       } else {
         setMessage("Login successful! Redirecting...");
@@ -162,8 +164,7 @@ function Page() {
             Log In
           </button>
         </div>
-            <div className="">
-                 <form onSubmit={handleFormSubmit} className="space-y-4 ">
+            <form onSubmit={handleFormSubmit} className="space-y-4">
           {isSignup && (
             <div>
               <label
@@ -364,10 +365,10 @@ function Page() {
             </button>
           </div>
         </form>
-            </div>
-     
+      
+            
       </motion.div>
-    </div>
+      </div>
   );
 }
 

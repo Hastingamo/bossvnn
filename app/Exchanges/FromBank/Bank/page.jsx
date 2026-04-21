@@ -31,7 +31,7 @@ export default function BankTransferPage() {
   }, []);
 
   const bankDetails = {
-    bankName: "Demo Bank",
+    bankName: "access Bank",
     accountNumber: "0123456789",
     accountName: "BossVNN Exchange",
   };
@@ -65,7 +65,7 @@ export default function BankTransferPage() {
         <div className="p-8 space-y-8">
           <div className="text-center bg-secondary/20 p-6 rounded-2xl border border-border/50">
             <span className="text-sm text-muted-foreground uppercase tracking-wider font-semibold">Total Amount to Pay</span>
-            <div className="text-4xl font-black mt-1 text-foreground">
+            <div className="text-[18px] font-black mt-1 text-foreground">
               ₦{Number(amount).toLocaleString()}
             </div>
             {currency && (
@@ -120,7 +120,7 @@ export default function BankTransferPage() {
 
           <div className="flex flex-col gap-3">
             <button
-              onClick={() => router.push("/Profile")}
+              onClick={() => router.push("/Exchanges/Confirm")}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-all"
             >
               I Have Made the Payment

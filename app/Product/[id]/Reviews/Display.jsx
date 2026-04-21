@@ -1,6 +1,5 @@
 "use server";
 
-import { createClient } from "../../../lib/server";
 import ReviewAction from "./ReviewAction";
 
 export default async function ReviewList({ productId }) {
