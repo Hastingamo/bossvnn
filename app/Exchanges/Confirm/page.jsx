@@ -27,8 +27,8 @@ export default async function Page() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-4">Sell Coin</h1>
-
+      <h1 className="text-3xl font-bold mb-4">History of Coin  {username} have bought</h1>
+ 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {!transactions || transactions.length === 0 ? (
           <p>No transactions yet.</p>
