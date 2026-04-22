@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, Suspense } from "react";
 import { motion } from "framer-motion";
 import { 
   ArrowRightLeft, 
@@ -10,16 +10,32 @@ import {
   Coins,
   Loader2
 } from "lucide-react";
-import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export default function ExchangesContent({ initialCoins }) {
-  const [currency, setCurrency] = useState("");
-  const [fromThisCurrency, setFromThisCurrency] = useState("");
+const CoinsDataList = ({ coins }) => (
+  <datalist id="coins-list">
+    {coins.slice(0, 50).map((coin) => (
+      <option key={coin.id} value={coin.symbol.toUpperCase()}>
+        {coin.name}
+      </option>
+    ))}
+  </datalist>
+);
+
+function ExchangesContentInner({ initialCoins }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const [currency, setCurrency] = useState(() => searchParams.get("currency")?.toUpperCase() || "");
+  const [fromThisCurrency, setFromThisCurrency] = useState(() => searchParams.get("currency")?.toUpperCase() || "");
   const [toThisCurrency, setToThisCurrency] = useState("");
   const [amount, setAmount] = useState("");
-  const [coins, setCoins] = useState(initialCoins || []);
+  const [coins] = useState(initialCoins || []);
   const [error, setError] = useState("");
-  const [activeTab, setActiveTab] = useState("sell");
+  const [activeTab, setActiveTab] = useState(() => {
+    const tab = searchParams.get("tab");
+    return (tab && ["buy", "sell", "swap"].includes(tab)) ? tab : "sell";
+  });
   const [loading, setLoading] = useState(false);
 
   const handleTabChange = (tab) => {
@@ -38,7 +54,7 @@ export default function ExchangesContent({ initialCoins }) {
     const supportedCoins = coins.map((coin) => coin.symbol.toUpperCase());
 
     if (!supportedCoins.includes(symbol.toUpperCase())) {
-      setError(`Sorry, we do not support NGN:{symbol}.`);
+      setError(`Sorry, we do not support ${symbol}.`);
       return false;
     }
 
@@ -48,28 +64,34 @@ export default function ExchangesContent({ initialCoins }) {
 
   const openWhatsApp = (text) => {
     const message = encodeURIComponent(text);
-    window.open(`https://wa.me/NGN:{phone}?text=NGN:{message}`, "_blank");
+    window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
   };
 
   const handleBuy = () => {
     if (!validateCurrency(currency)) return;
-    openWhatsApp(`Hello, I want to buy NGN:{amount} NGN:{currency}`);
+    openWhatsApp(`Hello, I want to buy ${amount} ${currency}`);
   };
 
   const handleSell = () => {
     if (!validateCurrency(currency)) return;
-    openWhatsApp(`Hello, I want to sell   naira NGN:{amount} nairaNGN:{currency}`);
+    openWhatsApp(`Hello, I want to sell ${amount} ${currency}`);
   };
 
   const handleSwap = () => {
     if (!validateCurrency(fromThisCurrency)) return;
     if (!validateCurrency(toThisCurrency)) return;
-    openWhatsApp(`Hello, I want to exchange NGN:{amount} NGN:{fromThisCurrency} for NGN:{toThisCurrency}`);
+    openWhatsApp(`Hello, I want to exchange ${amount} ${fromThisCurrency} for ${toThisCurrency}`);
   };
 
   const handleFromBank = () => {
-localStorage.setItem("cryptoAmount", JSON.stringify(amount));
+    if (!validateCurrency(currency)) return;
+    if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
+      setError("Please enter a valid amount.");
+      return;
+    }
+    localStorage.setItem("cryptoAmount", JSON.stringify(amount));
     localStorage.setItem("fromBankCurrency", JSON.stringify(currency));
+    router.push("/Exchanges/FromBank");
   };
 
 
@@ -115,18 +137,18 @@ localStorage.setItem("cryptoAmount", JSON.stringify(amount));
         />
       </div>
       <div className="grid grid-cols-2 gap-4">
-            <button
-        type="submit"
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
-      >
-        {buttonText}
-      </button>
-         <button
-         onClick={handleFromBank}
-        type="submit"
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
-      >
-        <Link href="/Exchanges/FromBank">Buy with Bank Transfer</Link>
+        <button
+          type="submit"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
+        >
+          {buttonText}
+        </button>
+        <button
+          onClick={handleFromBank}
+          type="button"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
+        >
+          Buy with Bank Transfer
         </button>
       </div>
   
@@ -134,15 +156,6 @@ localStorage.setItem("cryptoAmount", JSON.stringify(amount));
   );
 
 
-      const CoinsDataList = () => (
-    <datalist id="coins-list">
-      {coins.slice(0, 50).map((coin) => (
-        <option key={coin.id} value={coin.symbol.toUpperCase()}>
-          {coin.name}
-        </option>
-      ))}
-    </datalist>
-  );
   const renderTabContent = () => {
 
     switch (activeTab) {
@@ -260,7 +273,7 @@ localStorage.setItem("cryptoAmount", JSON.stringify(amount));
                 <Loader2 className="animate-spin text-blue-500" size={48} />
               </div>
             )}
-                                   <CoinsDataList/>
+                                   <CoinsDataList coins={coins}/>
             {renderTabContent()}
 
             
@@ -269,5 +282,17 @@ localStorage.setItem("cryptoAmount", JSON.stringify(amount));
         </div>
       </div>
     </motion.div>
+  );
+}
+
+export default function ExchangesContent({ initialCoins }) {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="animate-spin text-blue-500" size={48} />
+      </div>
+    }>
+      <ExchangesContentInner initialCoins={initialCoins} />
+    </Suspense>
   );
 }
