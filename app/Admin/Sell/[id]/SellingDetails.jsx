@@ -25,7 +25,12 @@ export default function SellingDetails({ transaction, username }) {
       console.error("Error updating transaction status:", error);
       alert("Failed to update transaction status. Please try again.");
     } else {
-      setStatus("successful"); 
+         await supabase.channel(`transaction-${transaction.id}`).send({
+      type: "broadcast",
+      event: "status_update",
+      payload: { status: "successful" },
+    });
+    setStatus("successful"); // ✅ Update local state immediately for admin view
     }
 
     setLoading(false);

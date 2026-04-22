@@ -12,27 +12,25 @@ export default function SellingDetails({ transaction, username }) {
     accountName: "BossVNN Exchange",
   };
 
-  useEffect(() => {
-    const channel = supabase
-      .channel(`transaction-${transaction?.id}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "UPDATE",
-          schema: "public",
-          table: "transactions",
-          filter: `id=eq.${transaction?.id}`,
-        },
-        (payload) => {
-          setStatus(payload.new.status); 
-        }
-      )
-      .subscribe();
+useEffect(() => {
+  if (!transaction?.id) return;
 
-    return () => {
-      supabase.removeChannel(channel); 
-    };
-  }, [transaction?.id]);
+  const channel = supabase
+    .channel(`transaction-${transaction.id}`)
+    .on(
+      "broadcast",              // ✅ broadcast, not postgres_changes
+      { event: "status_update" },
+      (payload) => {
+        console.log("📡 Received:", payload);
+        setStatus(payload.payload.status);
+      }
+    )
+    .subscribe();
+
+  return () => {
+    supabase.removeChannel(channel);
+  };
+}, [transaction?.id]);
 
   return (
     <div className="p-8 border rounded-xl shadow-lg bg-white">
