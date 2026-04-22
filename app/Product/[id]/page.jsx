@@ -46,7 +46,7 @@ export default async function Page({ params }) {
             </div>
           )}
           <button>
-            <Link href="/Exchanges" className="bg-black text-white px-4 py-2">
+            <Link href={`/Exchanges?tab=buy&currency=${coin?.symbol}`} className="bg-black text-white px-4 py-2">
               buy {coin?.name}
             </Link>
           </button>

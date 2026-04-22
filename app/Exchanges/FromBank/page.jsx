@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/Client";
-import Link from "next/link";
 
 export default function FromBank() {
   const [loading, setLoading] = useState(false);
@@ -57,8 +56,7 @@ export default function FromBank() {
           const calculatedNgn = (
             parseFloat(cryptoAmount) *
             pricePerUnit *
-            1352 *
-            0.11
+            1650
           ).toFixed(2);
 
           const calculatedFee = (parseFloat(calculatedNgn) * 0.13).toFixed(2);
@@ -224,8 +222,7 @@ export default function FromBank() {
                         </span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-500">personal gain</span>
-                        {/* <span>share 11%</span> */}
+                        <span className="text-gray-500">Service Fee (13%)</span>
                         <span>₦{Number(fee).toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between text-sm font-semibold border-t border-gray-200 pt-1 mt-1">
