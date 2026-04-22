@@ -28,7 +28,7 @@ export default async function Page() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-4">History of Coin  {username} have bought</h1>
+      <h1 className="text-3xl font-bold mb-4">Transaction History for {username}</h1>
  
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {!transactions || transactions.length === 0 ? (
@@ -45,10 +45,10 @@ export default async function Page() {
                   {username}
                 </h2>
                     <p className="text-sm text-gray-600 mb-1">
-      <span className="font-medium">Wallet ID:</span> {transaction.wallet_id}
+      <span className="font-medium">{transaction.method === 'bank_sell' ? 'Bank Name:' : 'Wallet ID:'}</span> {transaction.wallet_id}
     </p>
         <p className="text-sm text-gray-600 mb-1">
-      <span className="font-medium">Wallet Address:</span> {transaction.wallet_address}
+      <span className="font-medium">{transaction.method === 'bank_sell' ? 'Account Details:' : 'Wallet Address:'}</span> {transaction.wallet_address}
     </p>
         <p className="text-sm text-gray-600 mb-1">
       <span className="font-medium">Total NGN:</span> {transaction.amount}

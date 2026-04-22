@@ -11,8 +11,10 @@ import {
   Loader2
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function ExchangesContent({ initialCoins }) {
+  const router = useRouter();
   const [currency, setCurrency] = useState("");
   const [fromThisCurrency, setFromThisCurrency] = useState("");
   const [toThisCurrency, setToThisCurrency] = useState("");
@@ -68,8 +70,21 @@ export default function ExchangesContent({ initialCoins }) {
   };
 
   const handleFromBank = () => {
-localStorage.setItem("cryptoAmount", JSON.stringify(amount));
+    if (!validateCurrency(currency)) return;
+    if (!amount) {
+      setError("Please enter an amount.");
+      return;
+    }
+
+    localStorage.setItem("cryptoAmount", JSON.stringify(amount));
     localStorage.setItem("fromBankCurrency", JSON.stringify(currency));
+    localStorage.setItem("transferType", JSON.stringify(activeTab));
+
+    if (activeTab === "buy") {
+      router.push("/Exchanges/FromBank");
+    } else {
+      router.push("/Exchanges/ToBank");
+    }
   };
 
 
@@ -123,10 +138,10 @@ localStorage.setItem("cryptoAmount", JSON.stringify(amount));
       </button>
          <button
          onClick={handleFromBank}
-        type="submit"
+        type="button"
         className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
       >
-        <Link href="/Exchanges/FromBank">Buy with Bank Transfer</Link>
+        {activeTab === "buy" ? "Buy with Bank Transfer" : "Sell for Bank Transfer"}
         </button>
       </div>
   
