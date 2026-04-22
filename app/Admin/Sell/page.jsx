@@ -4,15 +4,7 @@ import { createClient } from "../../lib/server";
 import Link from "next/link";
 
 export default async function Page() {
-  const container = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
-  };
 
-  const items = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
   const supabase = await createClient();
 
   const {
@@ -50,7 +42,7 @@ export default async function Page() {
                 key={transaction.id}
                 className="p-6 border rounded-lg shadow-sm bg-white w-full"
               >
-                <Link href={`/Exchanges/Confirm/${transaction.id}`} className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                <Link href={`/Admin/Sell/${transaction.id}`} className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                   {username}
                 </h2>
