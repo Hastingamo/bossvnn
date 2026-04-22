@@ -32,6 +32,21 @@ export default function SellingDetails({ transaction, username }) {
       });
       setStatus("completed");
     }
+      const { error: emailError } = await supabase.functions.invoke("send-email", {
+    body: {
+      userId: transaction.user_id,
+      username: username,
+      transactionId: transaction.id,
+      amount: `₦${transaction.total_ngn?.toLocaleString()}`,
+      currency: transaction.currency,
+    },
+  });
+
+  if (emailError) {
+    console.error("Email error:", emailError);
+  }
+
+
 
     setLoading(false);
   };
