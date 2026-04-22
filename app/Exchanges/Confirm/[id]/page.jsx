@@ -44,7 +44,7 @@ export default async function page({ params }) {
   return (
     <div className="container mx-auto p-8 max-w-2xl">
       <Link
-        href="/Admin/Sell"
+        href="/Exchanges/Confirm"
         className="inline-block mb-6 text-blue-500 hover:underline text-lg font-medium"
       >
         ← Back to history List
