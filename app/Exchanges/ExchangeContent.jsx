@@ -133,6 +133,64 @@ localStorage.setItem("cryptoAmount", JSON.stringify(amount));
     </form>
   );
 
+    const Forms = ({ buttonText, action }) => (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        action();
+      }}
+      className="space-y-5"
+    >
+      {error && <p className="text-red-500 font-semibold bg-red-100 dark:bg-red-900/30 p-3 rounded-lg border border-red-200 dark:border-red-800">{error}</p>}
+
+      <div>
+        <label className="flex items-center gap-2 text-lg font-medium mb-1">
+          <Coins size={18} className="text-primary" />
+          Currency
+        </label>
+        <input
+          type="text"
+          value={currency}
+          onChange={(e) => setCurrency(e.target.value)}
+          className="w-full border border-border bg-background rounded-lg p-3 outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+          placeholder="e.g. BTC"
+          list="coins-list"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="flex items-center gap-2 text-lg font-medium mb-1">
+          <Search size={18} className="text-primary" />
+          Amount
+        </label>
+        <input
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          className="w-full border border-border bg-background rounded-lg p-3 outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+          placeholder="0.00"
+          required
+        />
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+            <button
+        type="submit"
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
+      >
+        {buttonText}
+      </button>
+         <button
+         onClick={handleFromBank}
+        type="submit"
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
+      >
+        <Link href="/Exchanges/SellFromBank">Buy with Bank Transfer</Link>
+        </button>
+      </div>
+  
+    </form>
+  );
 
       const CoinsDataList = () => (
     <datalist id="coins-list">
@@ -218,7 +276,7 @@ localStorage.setItem("cryptoAmount", JSON.stringify(amount));
         );
 
       default:
-        return <Form buttonText="Sell on WhatsApp" action={handleSell} />;
+        return <Forms buttonText="Sell on WhatsApp" action={handleSell} />;
     }
   };
 

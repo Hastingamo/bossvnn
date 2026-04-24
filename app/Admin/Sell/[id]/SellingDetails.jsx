@@ -6,6 +6,7 @@ import { supabase } from "../../../lib/Client";
 export default function SellingDetails({ transaction, username }) {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(transaction?.status);
+  const [error, setError] = useState("");
 
   const bankDetails = {
     bankName: "Access Bank",
@@ -22,7 +23,7 @@ export default function SellingDetails({ transaction, username }) {
       .eq("id", transaction.id);
 
     if (error) {
-      console.error("Error updating transaction status:", error);
+      setError("Error updating transaction status:", error);
       alert("Failed to update transaction status. Please try again.");
     } else {
       await supabase.channel(`transaction-${transaction.id}`).send({
@@ -31,8 +32,7 @@ export default function SellingDetails({ transaction, username }) {
         payload: { status: "completed" },
       });
       setStatus("completed");
-    }
-      const { error: emailError } = await supabase.functions.invoke("send-email", {
+        const {errors} = await supabase.functions.invoke("send-email", {
     body: {
       userId: transaction.user_id,
       username: username,
@@ -41,6 +41,8 @@ export default function SellingDetails({ transaction, username }) {
       currency: transaction.currency,
     },
   });
+    }
+
 
   if (emailError) {
     console.error("Email error:", emailError);
@@ -66,7 +68,7 @@ export default function SellingDetails({ transaction, username }) {
     <div className="p-8 border rounded-xl shadow-lg bg-white">
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">{username}</h2>{" "}
-        {/* ✅ Moved above */}
+    
         <p className="text-sm text-gray-500">
           Transaction ID: {transaction?.id}
         </p>
@@ -144,7 +146,7 @@ export default function SellingDetails({ transaction, username }) {
 
         <button
           onClick={handleProcess}
-          disabled={loading || status === "successful"} // ✅ Disable if already processed
+          disabled={loading || status === "successful"} 
           className="w-full bg-black text-white py-3 px-4 rounded-xl font-semibold hover:bg-gray-800 focus:ring-4 focus:ring-black/20 focus:outline-none transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 mt-4"
         >
           {loading ? (
@@ -168,7 +170,7 @@ export default function SellingDetails({ transaction, username }) {
               <span>Processing...</span>
             </>
           ) : status === "successful" ? (
-            "✓ Transaction Processed" // ✅ Button reflects completed state
+            "✓ Transaction Processed" 
           ) : (
             "Process Transaction"
           )}
