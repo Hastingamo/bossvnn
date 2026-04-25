@@ -15,6 +15,7 @@ export default function ReviewForm({ productId }) {
   const [hasReviewed, setHasReviewed] = useState(false);
   const [checkingReview, setCheckingReview] = useState(true);
 
+
   useEffect(() => {
     const checkExistingReview = async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -52,7 +53,7 @@ export default function ReviewForm({ productId }) {
       product_id: productId,
       rating,
       comment,
-        username,
+        username : user.user_metadata?.username || "User", 
 
       created_at: new Date().toISOString(),
     });
