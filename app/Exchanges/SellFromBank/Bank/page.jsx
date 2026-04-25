@@ -30,14 +30,13 @@ export default function CryptoTransferPage() {
     }
   }, []);
 
-  // Placeholder addresses for platform wallets
+
   const bankDetails = {
    bankName: "access Bank",
     accountNumber: "0123456789",
     accountName: "BossVNN Exchange",
   };
 
-  // const currentWalletAddress = cryptoWallets[currency?.toUpperCase()] || "Please contact support for the address";
 
   const handleCopy = (text, field) => {
     navigator.clipboard.writeText(text);

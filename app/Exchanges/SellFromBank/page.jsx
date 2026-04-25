@@ -147,10 +147,11 @@ function Page() {
       return;
     }
 
-    const { error: insertError } = await supabase.from("transactions").insert({
+    const { error: insertError } = await supabase.from("transfer").insert({
       user_id: user.id,
-      wallet_id: accountNumber,
-      wallet_address: accountName,
+      account_number: accountNumber,
+      account_name: accountName,
+      bank_name: bankName,
       amount: parseFloat(totalNgn),
       currency: currency,
       total_ngn: parseFloat(totalNgn),
