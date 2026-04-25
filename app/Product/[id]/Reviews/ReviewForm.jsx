@@ -14,6 +14,7 @@ export default function ReviewForm({ productId }) {
   const [messageType, setMessageType] = useState("");
   const [hasReviewed, setHasReviewed] = useState(false);
   const [checkingReview, setCheckingReview] = useState(true);
+  const [username, setUsername] = useState("");
 
 
   useEffect(() => {
@@ -53,7 +54,7 @@ export default function ReviewForm({ productId }) {
       product_id: productId,
       rating,
       comment,
-        username : user.user_metadata?.username || "User", 
+        username, 
 
       created_at: new Date().toISOString(),
     });
@@ -68,6 +69,8 @@ export default function ReviewForm({ productId }) {
       setMessageType("success");
       setComment("");
       setRating(5);
+      setUsername(user.user_metadata?.username || "User");
+
       setHasReviewed(true);
       router.refresh();
     }
@@ -96,6 +99,7 @@ export default function ReviewForm({ productId }) {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
+        <div>{username}</div>
         <div className="flex space-x-1 mb-4">
           {[1, 2, 3, 4, 5].map((star) => (
             <button
