@@ -45,12 +45,12 @@ export default async function page({ params }) {
         href="/Admin/Buy"
         className="inline-block mb-6 text-blue-500 hover:underline text-lg font-medium"
       >
-        ← Back to Sell List
+        ← Back to Buy List
       </Link>
 
-      <h1 className="text-3xl font-bold mb-8">Sell Detail</h1>
+      <h1 className="text-3xl font-bold mb-8">Buy Detail</h1>
 
-      <SellingDetails transfer={transfer} username={username} />
+      <BuyingDetails transfer={transfer} username={username} />
     </div>
   );
 }
