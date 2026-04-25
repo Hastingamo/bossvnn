@@ -183,8 +183,6 @@ export default async function ReviewList({ productId }) {
     supabase.auth.getUser(),
   ]);
 
-       const { user_metadata = {} } = user ?? {};
-const usernames = user_metadata.username || "User"
   console.log("reviews:", reviews);
   console.log("error:", error);
 
@@ -209,7 +207,7 @@ const usernames = user_metadata.username || "User"
               <div key={review.id} className="p-6 border rounded-lg shadow-sm bg-white">
                 {/* ✅ review.username — each reviewer's own name saved at insert time */}
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                  {usernames }
+                  {review.username || "Anonymous"}
                 </h3>
 
                 <div className="flex items-center mb-2">

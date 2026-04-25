@@ -30,6 +30,7 @@ export default function ReviewForm({ productId }) {
         .maybeSingle();
 
       if (data) setHasReviewed(true);
+      setUsername(user.user_metadata?.username || "User");
       setCheckingReview(false);
     };
 
