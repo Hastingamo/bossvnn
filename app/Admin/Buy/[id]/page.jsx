@@ -12,7 +12,7 @@ export default async function page({ params }) {
   if (!user) {
     return (
       <div className="p-6">
-        <p className="text-red-500">Please log in to view sell details.</p>
+        <p className="text-red-500">Please log in to view buy details.</p>
         <Link href="/SignUp" className="text-blue-500 hover:underline">
           Go to Login
         </Link>
@@ -31,7 +31,7 @@ export default async function page({ params }) {
     return (
       <div className="p-8">
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-          
+          Buy transaction not found.
         </div>
       </div>
     );
