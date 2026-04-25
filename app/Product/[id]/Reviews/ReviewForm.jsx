@@ -52,6 +52,8 @@ export default function ReviewForm({ productId }) {
       product_id: productId,
       rating,
       comment,
+        username,
+
       created_at: new Date().toISOString(),
     });
 
