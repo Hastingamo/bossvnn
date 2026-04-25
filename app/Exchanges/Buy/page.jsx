@@ -14,14 +14,16 @@ export default async function Page() {
   if (!user) {
     return (
       <div className="p-6">
-        <p className="text-red-500">Please log in to view your transactions.</p>
+        <p className="text-red-500">Please log in to view your transfer.</p>
       </div>
     );
   }
 
-  const { data: transactions } = await supabase
-    .from("transactions")
+  const { data: transfer } = await supabase
+    .from("transfer")
     .select("*")
+        .eq("user_id", user.id)
+
     .order("created_at", { ascending: false });
 
   const username = user.user_metadata?.username || "User";
@@ -31,35 +33,36 @@ export default async function Page() {
       <h1 className="text-3xl font-bold mb-4">Sell Coin</h1>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {!transactions || transactions.length === 0 ? (
-          <p>No transactions yet.</p>
+        {!transfer || transfer.length === 0 ? (
+          <p>No transfer yet.</p>
         ) : (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 ">
             {" "}
-            {transactions.map((transaction) => (
+            {transfer.map((transaction) => (
               <div
                 key={transaction.id}
                 className="p-6 border rounded-lg shadow-sm bg-white w-full"
               >
-                <Link href={`/Admin/Sell/${transaction.id}`} className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                <Link href={`/Exchanges/Buy/${transaction.id}`} className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                   {username}
                 </h2>
                 <p className="text-sm text-gray-600 mb-1">
-                  <span className="font-medium">Wallet ID:</span>{" "}
-                  {transaction.wallet_id}
+                  <span className="font-medium">account number:</span>{" "}
+                  {transaction.account_number}
                 </p>
                 <p className="text-sm text-gray-600 mb-1">
-                  <span className="font-medium">Wallet Address:</span>{" "}
-                  {transaction.wallet_address}
+                  <span className="font-medium">account name:</span>{" "}
+                  {transaction.account_name}
                 </p>
-                <p className="text-sm text-gray-600 mb-1">
-                  <span className="font-medium">Total NGN:</span>{" "}
-                  {transaction.amount}
+                   <p className="text-sm text-gray-600 mb-1">
+                  <span className="font-medium">bank name:</span>{" "}
+                  {transaction.bank_name}
                 </p>
+          
                 <p className="text-sm text-gray-600 mb-1">
                   <span className="font-medium">Currency:</span>{" "}
-                  {transaction.currency}
+                 {transaction.crypto} {transaction.currency}
                 </p>
 
                 <p className="text-gray-900">{transaction.comment}</p>

@@ -22,7 +22,6 @@ export default async function Page() {
   const { data: transfer } = await supabase
     .from("transfer")
     .select("*")
-    .eq("user_id", user.id)
     .order("created_at", { ascending: false });
 
   const username = user.user_metadata?.username || "User";
@@ -60,12 +59,9 @@ export default async function Page() {
                 </p>
                 <p className="text-sm text-gray-600 mb-1">
                   <span className="font-medium">Total $:</span>{" "}
-                  {transaction.amount}
+                  {transaction.crypto} {transaction.currency}
                 </p>
-                <p className="text-sm text-gray-600 mb-1">
-                  <span className="font-medium">Currency:</span>{" "}
-                  {transaction.currency}
-                </p>
+              
 
                 <p className="text-gray-900">{transaction.comment}</p>
                 <p className="text-sm text-gray-500 mt-2">

@@ -1,5 +1,6 @@
 "use server";
 
+import { createClient } from "../../../lib/server";
 import ReviewAction from "./ReviewAction";
 
 export default async function ReviewList({ productId }) {
@@ -18,9 +19,10 @@ export default async function ReviewList({ productId }) {
       .order("created_at", { ascending: false }),
     supabase.auth.getUser(),
   ]);
-    const { user_metadata = {} } = user;
+   const { user_metadata = {} } = user ?? {};
+const username = user_metadata.username || "User";
 
-  const username = user_metadata.username || "User";
+
 
   const hasReviewed = reviews?.some((review) => review.user_id === user?.id);
 

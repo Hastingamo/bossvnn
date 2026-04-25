@@ -5,7 +5,7 @@ import { createClient } from "../../../lib/server";
 import SellingDetails from "./SellingDetails";
 
 export default async function page({ params }) {
-  const { id } = await params; // ✅ params is not a function
+  const { id } = await params;
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -21,11 +21,11 @@ export default async function page({ params }) {
     );
   }
 
+
   const { data: transaction, error } = await supabase
     .from("transactions")
     .select("*")
     .eq("id", id)
-    .eq("user_id", user.id)
     .single();
 
   if (error || !transaction) {
@@ -38,7 +38,11 @@ export default async function page({ params }) {
     );
   }
 
-  const username = user.user_metadata?.username || "User";
+  // ✅ Show the actual transaction owner's username if available
+  const username = transaction.user_metadata?.username
+    || transaction.username
+    || user.user_metadata?.username
+    || "User";
 
   return (
     <div className="container mx-auto p-8 max-w-2xl">
@@ -50,7 +54,6 @@ export default async function page({ params }) {
       </Link>
 
       <h1 className="text-3xl font-bold mb-8">Sell Detail</h1>
-
 
       <SellingDetails transaction={transaction} username={username} />
     </div>

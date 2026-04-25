@@ -29,7 +29,7 @@ export default async function Page() {
   return (
     <div>
       <h1 className="text-3xl font-bold mb-4">History of Coin  {username} have bought</h1>
-      <Link href="/Exchanges/Confirm/Sell" className="text-blue-500 hover:underline mb-6 inline-block"> thr buy</Link>
+      <Link href="/Exchanges/Buy" className="text-blue-500 hover:underline mb-6 inline-block"> thr buy</Link>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {!transactions || transactions.length === 0 ? (
           <p>No transactions yet.</p>
@@ -41,7 +41,7 @@ export default async function Page() {
                 key={transaction.id}
                 className="p-6 border rounded-lg shadow-sm bg-white"
               >
-                <Link href={`/Exchanges/Confirm/Buy/${transaction.id}`} className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                <Link href={`/Exchanges/Confirm/${transaction.id}`} className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                   {username}
                 </h2>
