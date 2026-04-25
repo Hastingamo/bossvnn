@@ -1,7 +1,7 @@
 "use server";
 import Link from "next/link";
 import { createClient } from "../../../lib/server";
-import SellingDetails from "./BuyingDetails";
+import BuyingDetails from "./BuyingDetails";
 
 export default async function page({ params }) {
   const { id } = await params;
