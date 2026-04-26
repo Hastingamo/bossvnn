@@ -91,7 +91,6 @@ const isStrongPassword = (pw) =>
           data: {
             username: userName,
             gender,
-            role,
           },
         },
       });

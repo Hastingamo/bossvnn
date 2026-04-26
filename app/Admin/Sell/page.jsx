@@ -18,9 +18,7 @@ export default async function Page() {
       </div>
     );
   }
-if(role !== "admin"){
-  redirect("/");
-}
+
 
   const { data: transactions } = await supabase
     .from("transactions")
