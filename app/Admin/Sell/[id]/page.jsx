@@ -38,7 +38,6 @@ export default async function page({ params }) {
     );
   }
 
-  // ✅ Show the actual transaction owner's username if available
   const username = transaction.user_metadata?.username
     || transaction.username
     || user.user_metadata?.username
