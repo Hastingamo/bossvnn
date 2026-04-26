@@ -13,7 +13,7 @@ function Page() {
   const [userName, setUserName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [gender, setGender] = useState("");
-  const [role, setRole] = useState("user");
+  // const [role, setRole] = useState("user");
   const [adminKey, setAdminKey] = useState("");
   const [isSignup, setIsSignup] = useState(true);
   const ADMIN_SECRET_KEY = process.env.NEXT_PUBLIC_ADMIN_SECRET_KEY || '' ; // Set env var, move to server for prod
@@ -71,18 +71,18 @@ const isStrongPassword = (pw) =>
         setLoading(false);
         return;
       }
-      if (!role) {
-        setError("Please select a role");
-        setLoading(false);
-        return;
-      }
-   if (role === "admin") {
-  if (!adminKey || adminKey == ADMIN_SECRET_KEY) {
-    setError("Invalid admin key");
-    setLoading(false);
-    return;
-  }
-}
+//       if (!role) {
+//         setError("Please select a role");
+//         setLoading(false);
+//         return;
+//       }
+//    if (role === "admin") {
+//   if (!adminKey || adminKey == ADMIN_SECRET_KEY) {
+//     setError("Invalid admin key");
+//     setLoading(false);
+//     return;
+//   }
+// }
       const { data, error } = await supabase.auth.signUp({
         email: email.toLowerCase(),
         password,
@@ -264,7 +264,7 @@ const isStrongPassword = (pw) =>
                   <option value="other">Other</option>
                 </select>
               </div>
-              <div>
+              {/* <div>
                 <label
                   htmlFor="role"
                   className="block text-sm font-medium text-gray-700 mb-1"
@@ -282,8 +282,8 @@ const isStrongPassword = (pw) =>
                   <option value="user">User</option>
                   <option value="admin">Admin</option>
                 </select>
-              </div>
-              {role === "admin" && (
+              </div> */}
+              {/* {role === "admin" && (
                 <div>
                   <label
                     htmlFor="adminKey"
@@ -304,7 +304,7 @@ const isStrongPassword = (pw) =>
                     Key: ADMIN_SECRET_KEY{" "}
                   </p>
                 </div>
-              )}
+              )} */}
             </>
           )}
 
