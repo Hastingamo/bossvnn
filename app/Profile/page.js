@@ -33,7 +33,7 @@ export default async function ProfilePage() {
             Gender: {gender}
           </p>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-            Role: {user_metadata.role || 'user'}
+   Role: {user.app_metadata?.role || 'user'}
           </p>
         </div>
         <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
