@@ -45,10 +45,10 @@ alter table public.transactions enable row level security;
 create policy "Admin can update transactions"
   on public.transactions for update
   using (
-    (auth.jwt() ->> 'role') = 'admin'
+    (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
   )
   with check (
-    (auth.jwt() ->> 'role') = 'admin'
+    (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
   );
 
 -- Users can view own transactions, admins can view all
@@ -56,7 +56,7 @@ create policy "Users and admins can view transactions"
   on public.transactions for select
   using (
     auth.uid() = user_id
-    OR (auth.jwt() ->> 'role') = 'admin'
+    OR (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
   );
 
 -- Users can only insert their own transactions
