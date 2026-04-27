@@ -8,10 +8,11 @@ export default async function AdminPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-const role = user.app_metadata?.role; 
 
-if (role !== "admin") redirect("/");
-
+if (!user) {
+    redirect("/SignUp");
+  }
+  
   return (
     <div>
       <div className="flex gap-4 justify-center items-center w-full mt-5 ">
