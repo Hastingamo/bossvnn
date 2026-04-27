@@ -31,7 +31,7 @@ export default async function Page() {
 
   const { data: transactions } = await supabase
     .from("transactions")
-    .select("*")
+    .select("*, profiles(username)")
     .order("created_at", { ascending: false });
 
   return (
@@ -50,7 +50,7 @@ export default async function Page() {
               >
                 <Link href={`/Admin/Sell/${transaction.id}`} className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                   <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                    {transaction.username ?? "Anonymous"} 
+                    {transaction.profiles?.username ?? "Anonymous"}
                   </h2>
                   <p className="text-sm text-gray-600 mb-1">
                     <span className="font-medium">Wallet ID:</span>{" "}
