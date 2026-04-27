@@ -455,7 +455,7 @@ function Page() {
         return;
       }
       if (role === "admin") {
-        if (!adminKey || adminKey !== ADMIN_SECRET_KEY) {
+        if (!adminKey || adminKey == ADMIN_SECRET_KEY) {
           setError("Invalid admin key");
           setLoading(false);
           return;
