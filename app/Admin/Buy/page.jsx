@@ -18,6 +18,15 @@ export default async function Page() {
       </div>
     );
   }
+   const role = user.app_metadata?.role || user.user_metadata?.role;
+  if (role !== "admin") {
+    return (
+      <div className="p-6 text-center">
+        <h1 className="text-2xl font-bold text-red-600">Access Denied</h1>
+        <p className="mt-2">You do not have permission to view this page.</p>
+      </div>
+    );
+  }
 
   const { data: transfer } = await supabase
     .from("transfer")
