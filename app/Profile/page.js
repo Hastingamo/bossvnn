@@ -12,9 +12,10 @@ export default async function ProfilePage() {
     redirect('/SignUp');
   }
 
-  const { user_metadata = {} } = user;
+  const { user_metadata = {}, app_metadata = {} } = user;
   const username = user_metadata.username || 'User';
   const gender = user_metadata.gender || 'Not specified';
+  const role = app_metadata.role || user_metadata.role || 'user';
 
   return (
     <div className="min-h-screen pt-[6rem] md:pl-[10rem] md:pt-[8rem] lg:pl-[20rem] lg:pt-[12rem] xl:flex xl:items-center xl:justify-center xl:pl-[6rem] xl:pt-[4rem] py-12 px-4 bg-gradient-to-br from-[#004643] to-[#foede5] dark:from-slate-900 dark:to-slate-800">
@@ -33,7 +34,7 @@ export default async function ProfilePage() {
             Gender: {gender}
           </p>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-   Role: {user.app_metadata?.role || 'admin'}
+            Role: {role}
           </p>
         </div>
         <div className="text-xs text-gray-500 dark:text-gray-400 text-center">

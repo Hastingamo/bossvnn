@@ -391,8 +391,12 @@ function Page() {
   const [userName, setUserName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [gender, setGender] = useState("");
+  const [role, setRole] = useState("user");
+  const [adminKey, setAdminKey] = useState("");
   const [isSignup, setIsSignup] = useState(true);
   const [loading, setLoading] = useState(false);
+
+  const ADMIN_SECRET_KEY = process.env.NEXT_PUBLIC_ADMIN_SECRET_KEY;
   const router = useRouter();
 
   const toggleMode = () => {
@@ -404,6 +408,8 @@ function Page() {
     setUserName("");
     setConfirmPassword("");
     setGender("");
+    setRole("user");
+    setAdminKey("");
     setLoading(false);
   };
 
@@ -443,6 +449,18 @@ function Page() {
         setLoading(false);
         return;
       }
+      if (!role) {
+        setError("Please select a role");
+        setLoading(false);
+        return;
+      }
+      if (role === "admin") {
+        if (!adminKey || adminKey !== ADMIN_SECRET_KEY) {
+          setError("Invalid admin key");
+          setLoading(false);
+          return;
+        }
+      }
 
       const { data, error } = await supabase.auth.signUp({
         email: email.toLowerCase(),
@@ -452,6 +470,7 @@ function Page() {
           data: {
             username: userName,
             gender,
+            role,
           },
         },
       });
@@ -604,6 +623,39 @@ function Page() {
                   <option value="other">Other</option>
                 </select>
               </div>
+
+              <div>
+                <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
+                  Role *
+                </label>
+                <select
+                  id="role"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  required
+                >
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+
+              {role === "admin" && (
+                <div>
+                  <label htmlFor="adminKey" className="block text-sm font-medium text-gray-700 mb-1">
+                    Admin Key *
+                  </label>
+                  <input
+                    id="adminKey"
+                    type="password"
+                    placeholder="Enter secret admin key"
+                    value={adminKey}
+                    onChange={(e) => setAdminKey(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                    required
+                  />
+                </div>
+              )}
             </>
           )}
 
