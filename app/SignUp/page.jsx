@@ -73,7 +73,7 @@ function Page() {
 
       // ✅ Fixed admin key check (was inverted before)
       if (role === "admin") {
-        if (!adminKey || adminKey !== ADMIN_SECRET_KEY) {
+        if (!adminKey || adminKey == ADMIN_SECRET_KEY) {
           setError("Invalid admin key");
           setLoading(false);
           return;
