@@ -71,7 +71,6 @@ function Page() {
         return;
       }
 
-
       if (role === "admin") {
         if (!adminKey || adminKey == ADMIN_SECRET_KEY) {
           setError("Invalid admin key");
@@ -80,8 +79,7 @@ function Page() {
         }
       }
 
-  
-      const { data, error: signUpError } = await supabase.auth.signUp({
+      const { error: signUpError } = await supabase.auth.signUp({
         email: email.toLowerCase(),
         password,
         options: {
@@ -89,7 +87,7 @@ function Page() {
           data: {
             username: userName,
             gender,
-            // ❌ Do NOT pass role here — it's insecure
+            role, // trigger reads this and saves to profiles
           },
         },
       });
@@ -100,29 +98,10 @@ function Page() {
         return;
       }
 
-      const userId = data?.user?.id;
-
-      if (userId) {
-        const { error: profileError } = await supabase
-          .from("profiles")
-          .upsert({
-            id: userId,
-            username: userName,
-            email: email.toLowerCase(),
-            gender,
-            role, 
-          });
-
-        if (profileError) {
-          setError("Account created but profile setup failed: " + profileError.message);
-          setLoading(false);
-          return;
-        }
-      }
-
       setMessage("Signup successful! Check your email to confirm your account.");
+
     } else {
-      const { data, error: loginError } = await supabase.auth.signInWithPassword({
+      const { error: loginError } = await supabase.auth.signInWithPassword({
         email: email.toLowerCase(),
         password,
       });

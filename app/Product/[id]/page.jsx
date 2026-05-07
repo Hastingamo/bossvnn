@@ -20,7 +20,7 @@ export default async function Page({ params }) {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-8 bg-[#f2e0d0]">
       <h1 className="text-2xl font-bold mb-4">Product Details</h1>
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
@@ -32,7 +32,7 @@ export default async function Page({ params }) {
         View All Reviews
       </Link>
 
-      <div className="grid grid-cols-1 gap-8 w-full md:w-2/4">
+      <div className="grid grid-cols-1 gap-8 w-full md:w-2/4 bg-[#GE88bB0]">
         <div className="border-2 p-8 shadow-lg rounded-xl bg-white flex flex-col items-center justify-center h-[200px]">
           {coin && (
             <div className="text-center">
