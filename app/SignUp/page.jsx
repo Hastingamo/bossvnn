@@ -71,7 +71,7 @@ function Page() {
         return;
       }
 
-      // ✅ Fixed admin key check (was inverted before)
+
       if (role === "admin") {
         if (!adminKey || adminKey == ADMIN_SECRET_KEY) {
           setError("Invalid admin key");
@@ -80,7 +80,7 @@ function Page() {
         }
       }
 
-      // Step 1: Sign up the user (NO role in metadata — role lives in profiles table)
+  
       const { data, error: signUpError } = await supabase.auth.signUp({
         email: email.toLowerCase(),
         password,
@@ -103,7 +103,6 @@ function Page() {
       const userId = data?.user?.id;
 
       if (userId) {
-        // Step 2: Insert into profiles table with the correct role
         const { error: profileError } = await supabase
           .from("profiles")
           .upsert({
@@ -111,7 +110,7 @@ function Page() {
             username: userName,
             email: email.toLowerCase(),
             gender,
-            role, // ✅ Role is stored securely in your own DB
+            role, 
           });
 
         if (profileError) {
@@ -123,7 +122,6 @@ function Page() {
 
       setMessage("Signup successful! Check your email to confirm your account.");
     } else {
-      // Login
       const { data, error: loginError } = await supabase.auth.signInWithPassword({
         email: email.toLowerCase(),
         password,
@@ -160,7 +158,6 @@ function Page() {
           </p>
         </div>
 
-        {/* Toggle */}
         <div className="flex bg-gray-100 p-1 rounded-full">
           <button
             type="button"
