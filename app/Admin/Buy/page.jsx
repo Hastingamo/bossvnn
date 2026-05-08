@@ -136,7 +136,7 @@ export default async function Page() {
     .order("created_at", { ascending: false });
 
   if (error) {
-    console.error("Error fetching transfers:", error.message);
+    console.log("Error fetching transfers:", error.message);
   }
 
   return (
