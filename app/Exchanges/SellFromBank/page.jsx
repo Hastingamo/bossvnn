@@ -157,6 +157,7 @@ function Page() {
       total_ngn: parseFloat(totalNgn),
       method: "bank",
       status: "pending",
+
       crypto: cryptoAmount,
     });
 
