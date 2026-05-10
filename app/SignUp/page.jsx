@@ -87,7 +87,7 @@ function Page() {
           data: {
             username: userName,
             gender,
-            role, // trigger reads this and saves to profiles
+            role, 
           },
         },
       });
