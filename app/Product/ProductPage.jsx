@@ -28,7 +28,7 @@ export default function ProductPage({initializeCoins}) {
 }, [searchTerm, initializeCoins]);
 
   return (
-    <div>
+    <div className='p-2'>
         <div>
              <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
           <h1 className="text-3xl font-bold">Product</h1>

@@ -29,14 +29,13 @@ export default async function Page() {
   const username = user.user_metadata?.username || "User";
 
   return (
-    <div>
+    <div className="p-6">
       <h1 className="text-3xl font-bold mb-4">Sell Coin</h1>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {!transfer || transfer.length === 0 ? (
           <p>No transfer yet.</p>
         ) : (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 ">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
             {" "}
             {transfer.map((transaction) => (
               <div
@@ -47,20 +46,20 @@ export default async function Page() {
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                   {username}
                 </h2>
-                <p className="text-sm text-gray-600 mb-1">
+                <p className="text-sm md:text-[16px] text-gray-600 mb-1">
                   <span className="font-medium">account number:</span>{" "}
                   {transaction.account_number}
                 </p>
-                <p className="text-sm text-gray-600 mb-1">
+                <p className="text-sm md:text-[16px] text-gray-600 mb-1">
                   <span className="font-medium">account name:</span>{" "}
                   {transaction.account_name}
                 </p>
-                   <p className="text-sm text-gray-600 mb-1">
+                   <p className="text-sm md:text-[16px] text-gray-600 mb-1">
                   <span className="font-medium">bank name:</span>{" "}
                   {transaction.bank_name}
                 </p>
           
-                <p className="text-sm text-gray-600 mb-1">
+                <p className="text-sm md:text-[16px] text-gray-600 mb-1">
                   <span className="font-medium">Currency:</span>{" "}
                  {transaction.crypto} {transaction.currency}
                 </p>
@@ -75,6 +74,5 @@ export default async function Page() {
           </div>
         )}
       </div>
-    </div>
   );
 }

@@ -18,7 +18,7 @@ useEffect(() => {
   const channel = supabase
     .channel(`transaction-${transaction.id}`)
     .on(
-      "broadcast",              // ✅ broadcast, not postgres_changes
+      "broadcast",             
       { event: "status_update" },
       (payload) => {
         console.log("📡 Received:", payload);

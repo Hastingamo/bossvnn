@@ -117,7 +117,6 @@ export default async function Page() {
     );
   }
 
-  // Fetch ALL transfers joined with each user's profile
   const { data: transactions, error } = await supabase
     .from("transactions")
     .select(`

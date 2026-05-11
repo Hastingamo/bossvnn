@@ -179,7 +179,7 @@ function Page() {
   };
 
   return (
-    <div>
+    <div className="p-6">
       <h1 className="text-2xl font-bold">Sell From Bank</h1>
       <p className="mt-4 text-gray-600">This is the Sell From Bank page.</p>
       <div className="max-w-6xl mx-auto">

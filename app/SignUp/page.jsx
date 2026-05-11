@@ -12,7 +12,7 @@ function Page() {
   const [userName, setUserName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [gender, setGender] = useState("");
-  const [role, setRole] = useState("user");
+  const [role, setRole] = useState("");
   const [adminKey, setAdminKey] = useState("");
   const [isSignup, setIsSignup] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -29,21 +29,22 @@ function Page() {
     setUserName("");
     setConfirmPassword("");
     setGender("");
-    setRole("user");
     setAdminKey("");
     setLoading(false);
   };
+  
 
   const isStrongPassword = (pw) =>
     pw.length >= 8 && /[A-Z]/.test(pw) && /[a-z]/.test(pw) && /\d/.test(pw);
 
   const handleFormSubmit = async (e) => {
+ 
     e.preventDefault();
     setError("");
     setMessage("");
     setLoading(true);
-
-    if (!password || password.length < 6) {
+    try {
+ if (!password || password.length < 6) {
       setError("Password must be at least 6 characters");
       setLoading(false);
       return;
@@ -107,7 +108,7 @@ function Page() {
       });
 
       if (loginError) {
-        setError(loginError.message);
+        console.log("Login error:", loginError);
       } else {
         setMessage("Login successful! Redirecting...");
         setTimeout(() => {
@@ -118,6 +119,13 @@ function Page() {
     }
 
     setLoading(false);
+    } catch (err) {
+      setError("An unexpected error occurred. Please try again.");
+      console.log("Unexpected error:", err);
+      setLoading(false);
+      return;
+    }
+
   };
 
   return (

@@ -136,7 +136,7 @@ export default function BuyingDetails({ transfer, username }) {
 
         <button
           onClick={handleProcess}
-          disabled={loading || status === "completed"} // ✅ Fixed: was "successful", now matches "completed"
+          disabled={loading || status === "completed"}
           className="w-full bg-black text-white py-3 px-4 rounded-xl font-semibold hover:bg-gray-800 focus:ring-4 focus:ring-black/20 focus:outline-none transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 mt-4"
         >
           {loading ? (
@@ -147,7 +147,7 @@ export default function BuyingDetails({ transfer, username }) {
               </svg>
               <span>Processing...</span>
             </>
-          ) : status === "completed" ? ( // ✅ Fixed: was "successful", now matches "completed"
+          ) : status === "completed" ? ( 
             "✓ Transaction Processed"
           ) : (
             "Process Transaction"

@@ -42,10 +42,7 @@ export default async function Page() {
     );
   }
 
-  // ==========================================
-  // FETCH ALL TRANSFERS WITH USER DETAILS
-  // via transfer_with_profiles view
-  // ==========================================
+
   const { data: transfer, error } = await supabase
     .from("transfer_with_profiles")
     .select("*")
@@ -65,14 +62,13 @@ export default async function Page() {
       {!transfer || transfer.length === 0 ? (
         <p className="text-gray-500">No transfers yet.</p>
       ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {transfer.map((transaction) => (
             <div
               key={transaction.id}
               className="p-6 border rounded-lg shadow-sm bg-white w-full hover:shadow-md transition"
             >
               <Link href={`/Admin/Buy/${transaction.id}`}>
-                {/* User info */}
                 <div className="flex items-center justify-between mb-3">
                   <h2 className="text-xl font-bold text-gray-900">
                     {transaction.username || "Unknown User"}
@@ -94,61 +90,57 @@ export default async function Page() {
                   {transaction.user_email}
                 </p>
 
-                {/* Bank details */}
                 <div className="space-y-1">
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm md:text-[16px] text-gray-600">
                     <span className="font-medium">Account Number:</span>{" "}
                     {transaction.account_number}
                   </p>
 
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm md:text-[16px] text-gray-600">
                     <span className="font-medium">Account Name:</span>{" "}
                     {transaction.account_name}
                   </p>
 
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm md:text-[16px] text-gray-600">
                     <span className="font-medium">Bank Name:</span>{" "}
                     {transaction.bank_name}
                   </p>
 
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm md:text-[16px] text-gray-600">
                     <span className="font-medium">Method:</span>{" "}
                     {transaction.method}
                   </p>
                 </div>
 
-                {/* Amounts */}
                 <div className="mt-3 pt-3 border-t border-gray-100 space-y-1">
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm md:text-[16px] text-gray-600">
                     <span className="font-medium">Crypto:</span>{" "}
                     {transaction.crypto} {transaction.currency?.toUpperCase()}
                   </p>
 
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm md:text-[16px] text-gray-600">
                     <span className="font-medium">Amount NGN:</span>{" "}
                     ₦{Number(transaction.amount).toLocaleString()}
                   </p>
 
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm md:text-[16px] text-gray-600">
                     <span className="font-medium">Fee:</span>{" "}
                     ₦{Number(transaction.fee).toLocaleString()}
                   </p>
 
-                  <p className="text-sm font-semibold text-gray-800">
+                  <p className="text-sm md:text-[16px] font-semibold text-gray-800">
                     <span className="font-medium">Total NGN:</span>{" "}
                     ₦{Number(transaction.total_ngn).toLocaleString()}
                   </p>
                 </div>
 
-                {/* Comment */}
                 {transaction.comment && (
-                  <p className="text-sm text-gray-500 mt-3 italic">
+                  <p className="text-sm md:text-[14px] text-gray-500 mt-3 italic">
                     {transaction.comment}
                   </p>
                 )}
 
-                {/* Date */}
-                <p className="text-xs text-gray-400 mt-3">
+                <p className="text-xs md:text-[14px] text-gray-400 mt-3">
                   {new Date(transaction.created_at).toLocaleDateString(
                     "en-NG",
                     {

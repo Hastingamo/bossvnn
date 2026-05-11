@@ -27,15 +27,14 @@ export default async function Page() {
   const username = user.user_metadata?.username || "User";
 
   return (
-    <div>
+    <div className="p-6">
       <h1 className="text-3xl font-bold mb-4">History of Coin  {username} have bought</h1>
       <Link href="/Exchanges/Buy" className="text-blue-500 hover:underline mb-6 inline-block"> thr buy</Link>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {!transactions || transactions.length === 0 ? (
           <p>No transactions yet.</p>
         ) : (
           <div className="w-full">
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-3 xl:grid-cols-4 space-y-3">
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 space-y-3">
             {transactions.map((transaction) => (
               <div
                 key={transaction.id}
@@ -72,7 +71,6 @@ export default async function Page() {
             </div>
 
         )}
-      </div>
     </div>
   );
 }
