@@ -6,9 +6,7 @@ import Link from "next/link";
 export default async function Page() {
   const supabase = await createClient();
 
-  // ==========================================
-  // GET LOGGED IN USER
-  // ==========================================
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -22,11 +20,7 @@ export default async function Page() {
     );
   }
 
-  // ==========================================
-  // CHECK ROLE FROM PROFILES TABLE
-  // admin reads their own profile via
-  // "Users can read own profile" policy
-  // ==========================================
+
   const { data: adminProfile } = await supabase
     .from("profiles")
     .select("role, username")

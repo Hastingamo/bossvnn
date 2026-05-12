@@ -58,7 +58,7 @@ export default function FromBank() {
             parseFloat(cryptoAmount) *
             pricePerUnit *
             1352 *
-            0.11
+            0.13
           ).toFixed(2);
 
           const calculatedFee = (parseFloat(calculatedNgn) * 0.13).toFixed(2);

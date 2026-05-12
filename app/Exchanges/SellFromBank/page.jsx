@@ -63,7 +63,7 @@ function Page() {
     accNum.length === 10 && /^[0-9]+$/.test(accNum);
 
   const isAccountName = (accName) =>
-    accName.length >= 2 &&
+    accName.length >= 10 &&
     accName.length <= 50 &&
     /^[a-zA-Z\s]+$/.test(accName);
 
@@ -90,9 +90,9 @@ function Page() {
           setCoins(found);
           const pricePerUnit = found.current_price;
           const calculatedNgn = (
-            parseFloat(cryptoAmount) * pricePerUnit * 1352 * 0.11
+            parseFloat(cryptoAmount) * pricePerUnit * 1352 
           ).toFixed(2);
-          const calculatedFee = (parseFloat(calculatedNgn) * 0.07).toFixed(2);
+          const calculatedFee = (parseFloat(calculatedNgn) * 0.05).toFixed(2);
           setFee(calculatedFee);
           setTotalNgn(
             (parseFloat(calculatedNgn) + parseFloat(calculatedFee)).toFixed(2)
@@ -223,7 +223,7 @@ function Page() {
                   <p className={`text-xs mt-1 ${isAccountName(accountName) ? "text-green-600" : "text-orange-600"}`}>
                     {isAccountName(accountName)
                       ? "Valid account name"
-                      : "Letters only, 2-50 characters"}
+                      : "Letters only, 10-50 characters"}
                   </p>
                 )}
               </div>

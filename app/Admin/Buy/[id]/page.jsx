@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { createClient } from "../../../lib/server";
 import BuyingDetails from "./BuyingDetails";
+import { console } from "inspector";
 
 export default async function page({ params }) {
   const { id } = await params;
@@ -21,7 +22,7 @@ export default async function page({ params }) {
   }
 
   const { data: transfer, error } = await supabase
-    .from("transfer")
+    .from("transfer_with_profiles")
     .select("*")
     .eq("id", id)
     .eq("user_id", user.id)
@@ -36,6 +37,8 @@ export default async function page({ params }) {
       </div>
     );
   }
+  console.log("Fetched transfer with profile:", !transfer);
+  console.log("Error:", error);
 
   const username = user.user_metadata?.username || "User";
 
