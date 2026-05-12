@@ -38,6 +38,8 @@ export default function FromBank() {
   const isWalletAddress = (wAD) =>
     wAD.length >= 26 && /[A-Z]/.test(wAD) && /[a-z]/.test(wAD);
 
+        const isTotal = (isT) =>
+    isT >= 100;
   useEffect(() => {
     if (!currency || !cryptoAmount) return;
 
@@ -99,6 +101,11 @@ export default function FromBank() {
 
     if (!walletId || !walletAddress) {
       setError("Please fill all fields");
+      setLoading(false);
+      return;
+    }
+        if (!isTotal(totalNgn)) {
+      setError("Total must be at least ₦100");
       setLoading(false);
       return;
     }
@@ -232,6 +239,13 @@ export default function FromBank() {
                         <span>Total</span>
                         <span>₦{Number(totalNgn).toLocaleString()}</span>
                       </div>
+                                          {totalNgn && (
+                  <p className={`text-xs mt-1 ${isTotal(totalNgn) ? "text-green-600" : "text-orange-600"}`}>
+                    {isTotal(totalNgn)
+                      ? "Valid total amount"
+                      : "Total must be at least ₦100"}
+                  </p>
+                )}
                     </>
                   ) : (
                     <span className="text-gray-400 text-sm">

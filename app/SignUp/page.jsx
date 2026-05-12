@@ -17,7 +17,6 @@ function Page() {
   const [isSignup, setIsSignup] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  const ADMIN_SECRET_KEY = process.env.NEXT_PUBLIC_ADMIN_SECRET_KEY;
   const router = useRouter();
 
   const toggleMode = () => {
@@ -71,14 +70,27 @@ function Page() {
         setLoading(false);
         return;
       }
+      const validateAdminKey = async (key) => {
+  const { data, error } = await supabase.rpc("validate_admin_key", {
+    input_key: key,
+  });
+  if (error) return false;
+  return data === true;
+};
 
-      if (role === "admin") {
-        if (!adminKey || adminKey == ADMIN_SECRET_KEY) {
-          setError("Invalid admin key");
-          setLoading(false);
-          return;
-        }
-      }
+ if (role === "admin") {
+  if (!adminKey) {
+    setError("Admin key is required");
+    setLoading(false);
+    return;
+  }
+  const isValidKey = await validateAdminKey(adminKey);
+  if (!isValidKey) {
+    setError("Invalid admin key");
+    setLoading(false);
+    return;
+  }
+}
 
       const { error: signUpError } = await supabase.auth.signUp({
         email: email.toLowerCase(),

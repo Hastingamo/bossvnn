@@ -144,6 +144,9 @@ export default async function Page() {
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                     {transaction.username || "Unknown User"}
                 </h2>
+                 <p className="text-xs text-gray-400 mb-3">
+                  {transaction.user_email}
+                </p>
                 <p className="text-sm text-gray-600 mb-1">
                   <span className="font-medium">Wallet ID:</span>{" "}
                   {transaction.wallet_id}
@@ -156,10 +159,32 @@ export default async function Page() {
                   <span className="font-medium">Total NGN:</span>{" "}
                   {transaction.amount}
                 </p>
-                <p className="text-sm text-gray-600 mb-1">
+                <p className="text-sm text-gray-600 mb-5">
                   <span className="font-medium">Currency:</span>{" "}
                   {transaction.currency}
                 </p>
+
+                  <div className="mt-3 pt-3 border-t border-gray-100 space-y-1">
+                  <p className="text-sm md:text-[16px] text-gray-600">
+                    <span className="font-medium">Crypto:</span>{" "}
+                    {transaction.crypto} {transaction.currency?.toUpperCase()}
+                  </p>
+
+                  <p className="text-sm md:text-[16px] text-gray-600">
+                    <span className="font-medium">Amount NGN:</span>{" "}
+                    ₦{Number(transaction.amount).toLocaleString()}
+                  </p>
+
+                  <p className="text-sm md:text-[16px] text-gray-600">
+                    <span className="font-medium">Fee:</span>{" "}
+                    ₦{Number(transaction.fee).toLocaleString()}
+                  </p>
+
+                  <p className="text-sm md:text-[16px] font-semibold text-gray-800">
+                    <span className="font-medium">Total NGN:</span>{" "}
+                    ₦{Number(transaction.total_ngn).toLocaleString()}
+                  </p>
+                </div>
 
                 <p className="text-gray-900">{transaction.comment}</p>
                 <p className="text-sm text-gray-500 mt-2">

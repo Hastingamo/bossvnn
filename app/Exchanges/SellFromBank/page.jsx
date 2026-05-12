@@ -67,6 +67,8 @@ function Page() {
     accName.length <= 50 &&
     /^[a-zA-Z\s]+$/.test(accName);
 
+      const isTotal = (isT) =>
+    isT >= 100;
   useEffect(() => {
     const storedAmount = localStorage.getItem("cryptoAmount");
     const storedCurrency = localStorage.getItem("fromBankCurrency");
@@ -139,6 +141,11 @@ function Page() {
       return;
     }
 
+    if (!isTotal(totalNgn)) {
+      setError("Total must be at least ₦100");
+      setLoading(false);
+      return;
+    }
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
@@ -304,6 +311,13 @@ function Page() {
                         <span>Total</span>
                         <span>₦{Number(totalNgn).toLocaleString()}</span>
                       </div>
+                              {totalNgn && (
+                  <p className={`text-xs mt-1 ${isTotal(totalNgn) ? "text-green-600" : "text-orange-600"}`}>
+                    {isTotal(totalNgn)
+                      ? "Valid total amount"
+                      : "Total must be at least ₦100"}
+                  </p>
+                )}
                     </>
                   ) : (
                     <span className="text-gray-400 text-sm">

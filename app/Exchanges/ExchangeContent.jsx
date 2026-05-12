@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { 
-  ArrowRightLeft, 
-  TrendingUp, 
-  TrendingDown, 
-  Search, 
+import {
+  ArrowRightLeft,
+  TrendingUp,
+  TrendingDown,
+  Search,
   Coins,
-  Loader2
+  Loader2,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -46,6 +46,7 @@ export default function ExchangesContent({ initialCoins }) {
     return true;
   };
 
+  const isamount = (am) => am.length >= 0 && /^[0-9]+(\.[0-9]+)?$/.test(am);
   const openWhatsApp = (text) => {
     const message = encodeURIComponent(text);
     window.open(`https://wa.me/NGN:{phone}?text=NGN:{message}`, "_blank");
@@ -58,21 +59,23 @@ export default function ExchangesContent({ initialCoins }) {
 
   const handleSell = () => {
     if (!validateCurrency(currency)) return;
-    openWhatsApp(`Hello, I want to sell   naira NGN:{amount} nairaNGN:{currency}`);
+    openWhatsApp(
+      `Hello, I want to sell   naira NGN:{amount} nairaNGN:{currency}`,
+    );
   };
 
   const handleSwap = () => {
     if (!validateCurrency(fromThisCurrency)) return;
     if (!validateCurrency(toThisCurrency)) return;
-    openWhatsApp(`Hello, I want to exchange NGN:{amount} NGN:{fromThisCurrency} for NGN:{toThisCurrency}`);
+    openWhatsApp(
+      `Hello, I want to exchange NGN:{amount} NGN:{fromThisCurrency} for NGN:{toThisCurrency}`,
+    );
   };
 
   const handleFromBank = () => {
-localStorage.setItem("cryptoAmount", JSON.stringify(amount));
+    localStorage.setItem("cryptoAmount", JSON.stringify(amount));
     localStorage.setItem("fromBankCurrency", JSON.stringify(currency));
   };
-
-
 
   const Form = ({ buttonText, action }) => (
     <form
@@ -82,7 +85,11 @@ localStorage.setItem("cryptoAmount", JSON.stringify(amount));
       }}
       className="space-y-5"
     >
-      {error && <p className="text-red-500 font-semibold bg-red-100 dark:bg-red-900/30 p-3 rounded-lg border border-red-200 dark:border-red-800">{error}</p>}
+      {error && (
+        <p className="text-red-500 font-semibold bg-red-100 dark:bg-red-900/30 p-3 rounded-lg border border-red-200 dark:border-red-800">
+          {error}
+        </p>
+      )}
 
       <div>
         <label className="flex items-center gap-2 text-lg font-medium mb-1">
@@ -105,35 +112,42 @@ localStorage.setItem("cryptoAmount", JSON.stringify(amount));
           <Search size={18} className="text-primary" />
           Amount
         </label>
+
         <input
           type="number"
+          min="0"
           value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+
+            if (value >= 0 || value === "") {
+              setAmount(value);
+            }
+          }}
           className="w-full border border-border bg-background rounded-lg p-3 outline-none focus:ring-2 focus:ring-primary/50 transition-all"
           placeholder="0.00"
           required
         />
       </div>
       <div className="grid grid-cols-2 gap-4">
-            <button
-        type="submit"
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
-      >
-        {buttonText}
-      </button>
-         <button
-         onClick={handleFromBank}
-        type="submit"
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
-      >
-        <Link href="/Exchanges/FromBank">Buy with Bank Transfer</Link>
+        <button
+          type="submit"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
+        >
+          {buttonText}
+        </button>
+        <button
+          onClick={handleFromBank}
+          type="submit"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
+        >
+          <Link href="/Exchanges/FromBank">Buy with Bank Transfer</Link>
         </button>
       </div>
-  
     </form>
   );
 
-    const Forms = ({ buttonText, action }) => (
+  const Forms = ({ buttonText, action }) => (
     <form
       onSubmit={(e) => {
         e.preventDefault();
@@ -141,7 +155,11 @@ localStorage.setItem("cryptoAmount", JSON.stringify(amount));
       }}
       className="space-y-5"
     >
-      {error && <p className="text-red-500 font-semibold bg-red-100 dark:bg-red-900/30 p-3 rounded-lg border border-red-200 dark:border-red-800">{error}</p>}
+      {error && (
+        <p className="text-red-500 font-semibold bg-red-100 dark:bg-red-900/30 p-3 rounded-lg border border-red-200 dark:border-red-800">
+          {error}
+        </p>
+      )}
 
       <div>
         <label className="flex items-center gap-2 text-lg font-medium mb-1">
@@ -164,35 +182,42 @@ localStorage.setItem("cryptoAmount", JSON.stringify(amount));
           <Search size={18} className="text-primary" />
           Amount
         </label>
+
         <input
           type="number"
+          min="0"
           value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+
+            if (value >= 0 || value === "") {
+              setAmount(value);
+            }
+          }}
           className="w-full border border-border bg-background rounded-lg p-3 outline-none focus:ring-2 focus:ring-primary/50 transition-all"
           placeholder="0.00"
           required
         />
       </div>
       <div className="grid grid-cols-2 gap-4">
-            <button
-        type="submit"
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
-      >
-        {buttonText}
-      </button>
-         <button
-         onClick={handleFromBank}
-        type="submit"
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
-      >
-        <Link href="/Exchanges/SellFromBank">Buy with Bank Transfer</Link>
+        <button
+          type="submit"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
+        >
+          {buttonText}
+        </button>
+        <button
+          onClick={handleFromBank}
+          type="submit"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
+        >
+          <Link href="/Exchanges/SellFromBank">Buy with Bank Transfer</Link>
         </button>
       </div>
-  
     </form>
   );
 
-      const CoinsDataList = () => (
+  const CoinsDataList = () => (
     <datalist id="coins-list">
       {coins.slice(0, 50).map((coin) => (
         <option key={coin.id} value={coin.symbol.toUpperCase()}>
@@ -202,7 +227,6 @@ localStorage.setItem("cryptoAmount", JSON.stringify(amount));
     </datalist>
   );
   const renderTabContent = () => {
-
     switch (activeTab) {
       case "buy":
         return <Form buttonText="Buy on WhatsApp" action={handleBuy} />;
@@ -216,7 +240,11 @@ localStorage.setItem("cryptoAmount", JSON.stringify(amount));
             }}
             className="space-y-5"
           >
-            {error && <p className="text-red-500 font-semibold bg-red-100 dark:bg-red-900/30 p-3 rounded-lg border border-red-200 dark:border-red-800">{error}</p>}
+            {error && (
+              <p className="text-red-500 font-semibold bg-red-100 dark:bg-red-900/30 p-3 rounded-lg border border-red-200 dark:border-red-800">
+                {error}
+              </p>
+            )}
 
             <div>
               <label className="flex items-center gap-2 text-lg font-medium mb-1">
@@ -300,9 +328,11 @@ localStorage.setItem("cryptoAmount", JSON.stringify(amount));
                 key={tab}
                 onClick={() => handleTabChange(tab)}
                 className={`flex items-center gap-2 px-6 py-4 rounded-xl transition-all duration-300 font-bold capitalize
-                  ${activeTab === tab 
-                    ? "bg-blue-600 text-white shadow-lg translate-x-1" 
-                    : "hover:bg-secondary/40"}`}
+                  ${
+                    activeTab === tab
+                      ? "bg-blue-600 text-white shadow-lg translate-x-1"
+                      : "hover:bg-secondary/40"
+                  }`}
               >
                 {tab === "sell" && <TrendingDown size={20} />}
                 {tab === "buy" && <TrendingUp size={20} />}
@@ -318,11 +348,8 @@ localStorage.setItem("cryptoAmount", JSON.stringify(amount));
                 <Loader2 className="animate-spin text-blue-500" size={48} />
               </div>
             )}
-                                   <CoinsDataList/>
+            <CoinsDataList />
             {renderTabContent()}
-
-            
-     
           </div>
         </div>
       </div>
