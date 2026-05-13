@@ -6,7 +6,6 @@ import { supabase } from "../../../lib/Client";
 export default function SellingDetails({ transaction, username }) {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(transaction?.status);
-  const [error, setError] = useState("");
 
   const bankDetails = {
     bankName: "Access Bank",
@@ -98,9 +97,27 @@ export default function SellingDetails({ transaction, username }) {
         </p>
         <p className="text-sm">
           <span className="text-xs md:text-[16px] text-muted-foreground uppercase font-bold">
+            Crypto:
+          </span>{" "}
+          {transaction?.crypto} {transaction?.currency?.toUpperCase()}
+        </p>
+        <p className="text-sm">
+          <span className="text-xs md:text-[16px] text-muted-foreground uppercase font-bold">
+            Amount NGN:
+          </span>{" "}
+          ₦{Number(transaction?.amount).toLocaleString()}
+        </p>
+        <p className="text-sm">
+          <span className="text-xs md:text-[16px] text-muted-foreground uppercase font-bold">
+            Fee:
+          </span>{" "}
+          ₦{Number(transaction?.fee).toLocaleString()}
+        </p>
+        <p className="text-sm">
+          <span className="text-xs md:text-[16px] text-muted-foreground uppercase font-bold">
             Total NGN:
           </span>{" "}
-          ₦{transaction?.amount?.toLocaleString()}
+          ₦{Number(transaction?.total_ngn).toLocaleString()}
         </p>
         <p className="text-sm">
           <span className="text-xs md:text-[16px] text-muted-foreground uppercase font-bold">

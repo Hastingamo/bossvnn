@@ -1,23 +1,15 @@
 "use client";
-import React, { useState, useEffect } from 'react'; // ✅ Added useEffect
+import React, { useState } from 'react';
 import { supabase } from '../../../lib/Client';
 
 export default function BuyingDetails({ transfer, username }) {
   const [status, setStatus] = useState(transfer?.status);
-  const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false); 
   const bankDetails = {
     bankName: "Access Bank",
     accountNumber: "0123456789",
     accountName: "BossVNN Exchange",
   };
-
-  useEffect(() => {
-    const storedAmount = localStorage.getItem("cryptoAmount");
-    if (storedAmount) {
-      setAmount(JSON.parse(storedAmount));
-    }
-  }, []);
 
   const handleProcess = async () => {
     setLoading(true);
@@ -97,9 +89,27 @@ export default function BuyingDetails({ transfer, username }) {
         </p>
         <p className="text-sm">
           <span className="text-xs md:text-[16px] text-muted-foreground uppercase font-bold">
-            Total $:
+            Crypto Amount:
           </span>{" "}
-          {amount} {transfer?.currency}
+          {transfer?.crypto} {transfer?.currency?.toUpperCase()}
+        </p>
+        <p className="text-sm">
+          <span className="text-xs md:text-[16px] text-muted-foreground uppercase font-bold">
+            Amount NGN:
+          </span>{" "}
+          ₦{Number(transfer?.amount).toLocaleString()}
+        </p>
+        <p className="text-sm">
+          <span className="text-xs md:text-[16px] text-muted-foreground uppercase font-bold">
+            Fee:
+          </span>{" "}
+          ₦{Number(transfer?.fee).toLocaleString()}
+        </p>
+        <p className="text-sm">
+          <span className="text-xs md:text-[16px] text-muted-foreground uppercase font-bold">
+            Total NGN:
+          </span>{" "}
+          ₦{Number(transfer?.total_ngn).toLocaleString()}
         </p>
         <p className="text-sm">
           <span className="text-xs md:text-[16px] text-muted-foreground uppercase font-bold">
