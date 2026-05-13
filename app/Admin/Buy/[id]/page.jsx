@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { createClient } from "../../../lib/server";
 import BuyingDetails from "./BuyingDetails";
-import { console } from "inspector";
 
 export default async function page({ params }) {
   const { id } = await params;
@@ -21,11 +20,25 @@ export default async function page({ params }) {
     );
   }
 
+  const { data: adminProfile } = await supabase
+    .from("profiles")
+    .select("role, username")
+    .eq("id", user.id)
+    .single();
+
+  if (!adminProfile || adminProfile.role !== "admin") {
+    return (
+      <div className="p-6 text-center">
+        <h1 className="text-2xl font-bold text-red-600">Access Denied</h1>
+        <p className="mt-2">You do not have permission to view this page.</p>
+      </div>
+    );
+  }
+
   const { data: transfer, error } = await supabase
     .from("transfer_with_profiles")
     .select("*")
     .eq("id", id)
-    .eq("user_id", user.id)
     .single();
 
   if (error || !transfer) {
@@ -37,10 +50,8 @@ export default async function page({ params }) {
       </div>
     );
   }
-  console.log("Fetched transfer with profile:", !transfer);
-  console.log("Error:", error);
 
-  const username = user.user_metadata?.username || "User";
+  const username = transfer.username || "User";
 
   return (
     <div className="container mx-auto p-8 max-w-2xl">
