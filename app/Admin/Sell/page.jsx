@@ -140,7 +140,7 @@ export default async function Page() {
                 key={transaction.id}
                 className="p-6 border rounded-lg shadow-sm bg-white w-full"
               >
-                <Link href={`/Exchanges/Confirm/${transaction.id}`} className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                <Link href={`/Admin/Sell/${transaction.id}`} className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                     {transaction.username || "Unknown User"}
                 </h2>
