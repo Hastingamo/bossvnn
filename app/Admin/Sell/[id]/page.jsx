@@ -21,9 +21,24 @@ export default async function page({ params }) {
     );
   }
 
+  const { data: adminProfile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  if (!adminProfile || adminProfile.role !== "admin") {
+    return (
+      <div className="p-6 text-center">
+        <h1 className="text-2xl font-bold text-red-600">Access Denied</h1>
+        <p className="mt-2">You do not have permission to view this page.</p>
+      </div>
+    );
+  }
+
 
   const { data: transaction, error } = await supabase
-    .from("transactions")
+    .from("transactions_with_profiles")
     .select("*")
     .eq("id", id)
     .single();
@@ -38,10 +53,7 @@ export default async function page({ params }) {
     );
   }
 
-  const username = transaction.user_metadata?.username
-    || transaction.username
-    || user.user_metadata?.username
-    || "User";
+  const username = transaction.username || "User";
 
   return (
     <div className="container mx-auto p-8 max-w-2xl">
