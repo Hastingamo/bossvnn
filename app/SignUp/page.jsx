@@ -31,113 +31,122 @@ function Page() {
     setAdminKey("");
     setLoading(false);
   };
-  
 
   const isStrongPassword = (pw) =>
     pw.length >= 8 && /[A-Z]/.test(pw) && /[a-z]/.test(pw) && /\d/.test(pw);
 
+     const forgetPassword = async () => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: 'http://bossvnn.vercel.app/SignUp/ResetPassword',
+    });
+
+    if (error) setMessage(error.message);
+    else setMessage('Check your email for the reset link!');
+  };
   const handleFormSubmit = async (e) => {
- 
     e.preventDefault();
     setError("");
     setMessage("");
     setLoading(true);
     try {
- if (!password || password.length < 6) {
-      setError("Password must be at least 6 characters");
-      setLoading(false);
-      return;
-    }
+      if (!password || password.length < 6) {
+        setError("Password must be at least 6 characters");
+        setLoading(false);
+        return;
+      }
 
-    if (isSignup) {
-      if (!userName) {
-        setError("Username is required");
-        setLoading(false);
-        return;
-      }
-      if (password !== confirmPassword) {
-        setError("Passwords do not match");
-        setLoading(false);
-        return;
-      }
-      if (!isStrongPassword(password)) {
-        setError("Password must be 8+ chars, with uppercase, lowercase, and number");
-        setLoading(false);
-        return;
-      }
-      if (!gender) {
-        setError("Please select gender");
-        setLoading(false);
-        return;
-      }
-      const validateAdminKey = async (key) => {
-  const { data, error } = await supabase.rpc("validate_admin_key", {
-    input_key: key,
-  });
-  if (error) return false;
-  return data === true;
-};
+      if (isSignup) {
+        if (!userName) {
+          setError("Username is required");
+          setLoading(false);
+          return;
+        }
+        if (password !== confirmPassword) {
+          setError("Passwords do not match");
+          setLoading(false);
+          return;
+        }
+        if (!isStrongPassword(password)) {
+          setError(
+            "Password must be 8+ chars, with uppercase, lowercase, and number",
+          );
+          setLoading(false);
+          return;
+        }
+        if (!gender) {
+          setError("Please select gender");
+          setLoading(false);
+          return;
+        }
+        const validateAdminKey = async (key) => {
+          const { data, error } = await supabase.rpc("validate_admin_key", {
+            input_key: key,
+          });
+          if (error) return false;
+          return data === true;
+        };
 
- if (role === "admin") {
-  if (!adminKey) {
-    setError("Admin key is required");
-    setLoading(false);
-    return;
-  }
-  const isValidKey = await validateAdminKey(adminKey);
-  if (!isValidKey) {
-    setError("Invalid admin key");
-    setLoading(false);
-    return;
-  }
-}
+        if (role === "admin") {
+          if (!adminKey) {
+            setError("Admin key is required");
+            setLoading(false);
+            return;
+          }
+          const isValidKey = await validateAdminKey(adminKey);
+          if (!isValidKey) {
+            setError("Invalid admin key");
+            setLoading(false);
+            return;
+          }
+        }
+  
 
-      const { error: signUpError } = await supabase.auth.signUp({
-        email: email.toLowerCase(),
-        password,
-        options: {
-          emailRedirectTo: "http://bossvnn.vercel.app/Auth/Callback",
-          data: {
-            username: userName,
-            gender,
-            role, 
+        const { error: signUpError } = await supabase.auth.signUp({
+          email: email.toLowerCase(),
+          password,
+          options: {
+            emailRedirectTo: "http://bossvnn.vercel.app/Auth/Callback",
+            data: {
+              username: userName,
+              gender,
+              role,
+            },
           },
-        },
-      });
+        });
 
-      if (signUpError) {
-        setError(signUpError.message);
-        setLoading(false);
-        return;
-      }
+        if (signUpError) {
+          setError(signUpError.message);
+          setLoading(false);
+          return;
+        }
 
-      setMessage("Signup successful! Check your email to confirm your account.");
-
-    } else {
-      const { error: loginError } = await supabase.auth.signInWithPassword({
-        email: email.toLowerCase(),
-        password,
-      });
-
-      if (loginError) {
-        console.log("Login error:", loginError);
+        setMessage(
+          "Signup successful! Check your email to confirm your account.",
+        );
       } else {
-        setMessage("Login successful! Redirecting...");
-        setTimeout(() => {
-          router.refresh();
-          router.push("/Profile");
-        }, 2000);
-      }
-    }
+        const { error: loginError } = await supabase.auth.signInWithPassword({
+          email: email.toLowerCase(),
+          password,
+        });
 
-    setLoading(false);
+        if (loginError) {
+          console.log("Login error:", loginError);
+        } else {
+          setMessage("Login successful! Redirecting...");
+          setTimeout(() => {
+            router.refresh();
+            router.push("/Profile");
+          }, 2000);
+        }
+      }
+
+      setLoading(false);
     } catch (err) {
       setError("An unexpected error occurred. Please try again.");
       console.log("Unexpected error:", err);
       setLoading(false);
       return;
     }
-
   };
 
   return (
@@ -161,7 +170,9 @@ function Page() {
           <button
             type="button"
             className={`flex-1 py-3 px-4 rounded-full text-sm font-semibold transition-all ${
-              isSignup ? "bg-gradient-to-br from-[#fff3e6] to-[#381932] text-white" : ""
+              isSignup
+                ? "bg-gradient-to-br from-[#fff3e6] to-[#381932] text-white"
+                : ""
             }`}
             onClick={() => setIsSignup(true)}
           >
@@ -170,7 +181,9 @@ function Page() {
           <button
             type="button"
             className={`flex-1 py-3 px-4 rounded-full text-sm font-semibold transition-all ${
-              !isSignup ? "bg-gradient-to-br from-[#fff3e6] to-[#381932] text-white" : ""
+              !isSignup
+                ? "bg-gradient-to-br from-[#fff3e6] to-[#381932] text-white"
+                : ""
             }`}
             onClick={() => setIsSignup(false)}
           >
@@ -181,7 +194,10 @@ function Page() {
         <form onSubmit={handleFormSubmit} className="space-y-4">
           {isSignup && (
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Username *
               </label>
               <input
@@ -196,7 +212,10 @@ function Page() {
           )}
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Email *
             </label>
             <input
@@ -210,7 +229,10 @@ function Page() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Password *
             </label>
             <input
@@ -222,18 +244,25 @@ function Page() {
               required
             />
             {password && (
-              <p className={`text-xs mt-1 ${isStrongPassword(password) ? "text-green-600" : "text-orange-600"}`}>
+              <p
+                className={`text-xs mt-1 ${isStrongPassword(password) ? "text-green-600" : "text-orange-600"}`}
+              >
                 {isStrongPassword(password)
                   ? "✅ Strong password"
                   : "Password should be 8+ chars with upper, lower, number"}
               </p>
             )}
           </div>
+                    <button onClick={forgetPassword}>forget passowrd</button>
+
 
           {isSignup && (
             <>
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Confirm Password *
                 </label>
                 <input
@@ -247,7 +276,10 @@ function Page() {
               </div>
 
               <div>
-                <label htmlFor="gender" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="gender"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Gender *
                 </label>
                 <select
@@ -265,7 +297,10 @@ function Page() {
               </div>
 
               <div>
-                <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="role"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Role *
                 </label>
                 <select
@@ -282,7 +317,10 @@ function Page() {
 
               {role === "admin" && (
                 <div>
-                  <label htmlFor="adminKey" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="adminKey"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Admin Key *
                   </label>
                   <input
@@ -298,7 +336,6 @@ function Page() {
               )}
             </>
           )}
-            <button>forget passowrd</button>
           {error && (
             <div className="p-3 bg-red-50 border border-red-200 rounded-xl">
               <p className="text-sm text-red-600">{error}</p>
@@ -318,7 +355,15 @@ function Page() {
             {loading ? (
               <>
                 <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" opacity=".25" />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    fill="none"
+                    opacity=".25"
+                  />
                   <path
                     fill="currentColor"
                     opacity=".75"
@@ -338,7 +383,9 @@ function Page() {
               onClick={toggleMode}
               className="text-sm text-blue-600 hover:text-blue-700 font-medium underline"
             >
-              {isSignup ? "Already have an account? Log in" : "Need an account? Sign up"}
+              {isSignup
+                ? "Already have an account? Log in"
+                : "Need an account? Sign up"}
             </button>
           </div>
         </form>
