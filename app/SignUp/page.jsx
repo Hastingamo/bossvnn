@@ -298,7 +298,7 @@ function Page() {
               )}
             </>
           )}
-
+            <button>forget passowrd</button>
           {error && (
             <div className="p-3 bg-red-50 border border-red-200 rounded-xl">
               <p className="text-sm text-red-600">{error}</p>

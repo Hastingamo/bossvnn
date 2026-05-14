@@ -140,13 +140,24 @@ export default async function Page() {
                 key={transaction.id}
                 className="p-6 border rounded-lg shadow-sm bg-white w-full"
               >
-                <Link href={`/Exchanges/Confirm/${transaction.id}`} className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                <Link href={`/Admin/Sell/${transaction.id}`} className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                     {transaction.username || "Unknown User"}
                 </h2>
                  <p className="text-xs text-gray-400 mb-3">
                   {transaction.user_email}
                 </p>
+                              <span
+                    className={`text-xs font-semibold px-2 py-1 rounded-full ${
+                      transaction.status === "pending"
+                        ? "bg-orange-100 text-orange-600"
+                        : transaction.status === "completed"
+                        ? "bg-green-100 text-green-600"
+                        : "bg-red-100 text-red-600"
+                    }`}
+                  >
+                    {transaction.status}
+                  </span>
                 <p className="text-sm text-gray-600 mb-1">
                   <span className="font-medium">Wallet ID:</span>{" "}
                   {transaction.wallet_id}
