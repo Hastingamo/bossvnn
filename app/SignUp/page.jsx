@@ -37,7 +37,7 @@ function Page() {
 
      const forgetPassword = async () => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: 'http://bossvnn.vercel.app/SignUp/ResetPassword',
+      redirectTo: 'https://bossvnn.vercel.app/SignUp/ResetPassword',
     });
 
     if (error) setMessage(error.message);
@@ -105,7 +105,7 @@ function Page() {
           email: email.toLowerCase(),
           password,
           options: {
-            emailRedirectTo: "http://bossvnn.vercel.app/Auth/Callback",
+            emailRedirectTo: "https://bossvnn.vercel.app/Auth/Callback",
             data: {
               username: userName,
               gender,
