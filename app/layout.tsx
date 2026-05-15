@@ -5,6 +5,7 @@ import Headerss from "./Component/Headerss";
 import Footer from "./Component/Footer";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
+import { ThemeProvider } from "./Component/themeprovider";
 
 
 export const metadata: Metadata = {
@@ -21,12 +22,20 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${GeistMono} ${GeistSans} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-       <Headerss/>
-        {children}
-        <Footer/>
-        </body>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Headerss />
+          {children}
+          <Footer />
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
