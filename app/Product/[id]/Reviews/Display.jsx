@@ -205,7 +205,7 @@ export default async function ReviewList({ productId }) {
         ) : (
           <div className="space-y-4">
             {reviews.map((review) => (
-              <div key={review.id} className="p-6 border rounded-lg shadow-sm bg-white">
+              <div key={review.id} className="p-6 border dark:border-gray-800 rounded-lg shadow-sm bg-white dark:bg-gray-900 transition-colors">
                 {/* ✅ review.username — each reviewer's own name saved at insert time */}
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                 {review.username}
@@ -214,16 +214,16 @@ export default async function ReviewList({ productId }) {
                 <div className="flex items-center mb-2">
                   <span className="flex">
                     {[...Array(5)].map((_, i) => (
-                      <span key={i} className={i < review.rating ? "text-yellow-400" : "text-gray-300"}>
+                      <span key={i} className={i < review.rating ? "text-yellow-400" : "text-gray-300 dark:text-gray-600"}>
                         ⭐
                       </span>
                     ))}
                   </span>
-                  <span className="ml-2 text-sm text-gray-600">({review.rating}/5)</span>
+                  <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">({review.rating}/5)</span>
                 </div>
 
-                <p className="text-gray-900">{review.comment}</p>
-                <p className="text-sm text-gray-500 mt-2">
+                <p className="text-gray-900 dark:text-gray-300">{review.comment}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
                   {new Date(review.created_at).toLocaleDateString()}
                 </p>
 

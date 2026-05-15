@@ -150,29 +150,29 @@ function Page() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#fff3e6] to-[#381932] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#fff3e6] to-[#381932] dark:from-[#1a0f18] dark:to-[#0a0509] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
       <motion.div
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.8 }}
         initial={{ opacity: 0, scale: 0.9, y: 50 }}
-        className="w-full max-w-md bg-[#fff3e6] border rounded-2xl shadow-xl p-8 space-y-6"
+        className="w-full max-w-md bg-[#fff3e6] dark:bg-[#1a0f18] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-xl p-8 space-y-6"
       >
         <div>
-          <h1 className="text-3xl font-bold text-center text-gray-900">
+          <h1 className="text-3xl font-bold text-center text-gray-900 dark:text-white">
             {isSignup ? "Create Account" : "Welcome Back"}
           </h1>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
             {isSignup ? "Sign up to get started" : "Sign in to your account"}
           </p>
         </div>
 
-        <div className="flex bg-gray-100 p-1 rounded-full">
+        <div className="flex bg-gray-100 dark:bg-gray-800 p-1 rounded-full">
           <button
             type="button"
             className={`flex-1 py-3 px-4 rounded-full text-sm font-semibold transition-all ${
               isSignup
-                ? "bg-gradient-to-br from-[#fff3e6] to-[#381932] text-white"
-                : ""
+                ? "bg-gradient-to-br from-[#fff3e6] to-[#381932] dark:from-[#381932] dark:to-[#1a0f18] text-white"
+                : "text-gray-500 dark:text-gray-400"
             }`}
             onClick={() => setIsSignup(true)}
           >
@@ -182,8 +182,8 @@ function Page() {
             type="button"
             className={`flex-1 py-3 px-4 rounded-full text-sm font-semibold transition-all ${
               !isSignup
-                ? "bg-gradient-to-br from-[#fff3e6] to-[#381932] text-white"
-                : ""
+                ? "bg-gradient-to-br from-[#fff3e6] to-[#381932] dark:from-[#381932] dark:to-[#1a0f18] text-white"
+                : "text-gray-500 dark:text-gray-400"
             }`}
             onClick={() => setIsSignup(false)}
           >
@@ -196,7 +196,7 @@ function Page() {
             <div>
               <label
                 htmlFor="username"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
                 Username *
               </label>
@@ -205,7 +205,7 @@ function Page() {
                 type="text"
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 transition"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-blue-500 transition"
                 required
               />
             </div>
@@ -214,7 +214,7 @@ function Page() {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
             >
               Email *
             </label>
@@ -223,7 +223,7 @@ function Page() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 transition"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-blue-500 transition"
               required
             />
           </div>
@@ -231,7 +231,7 @@ function Page() {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
             >
               Password *
             </label>
@@ -240,12 +240,12 @@ function Page() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 transition"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-blue-500 transition"
               required
             />
             {password && (
               <p
-                className={`text-xs mt-1 ${isStrongPassword(password) ? "text-green-600" : "text-orange-600"}`}
+                className={`text-xs mt-1 ${isStrongPassword(password) ? "text-green-600 dark:text-green-400" : "text-orange-600 dark:text-orange-400"}`}
               >
                 {isStrongPassword(password)
                   ? "✅ Strong password"
@@ -253,7 +253,13 @@ function Page() {
               </p>
             )}
           </div>
-                    <button onClick={forgetPassword}>forget passowrd</button>
+          <button
+            type="button"
+            onClick={forgetPassword}
+            className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition"
+          >
+            forget password
+          </button>
 
 
           {isSignup && (
@@ -261,7 +267,7 @@ function Page() {
               <div>
                 <label
                   htmlFor="confirmPassword"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                 >
                   Confirm Password *
                 </label>
@@ -270,7 +276,7 @@ function Page() {
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 transition"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-blue-500 transition"
                   required
                 />
               </div>
@@ -278,7 +284,7 @@ function Page() {
               <div>
                 <label
                   htmlFor="gender"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                 >
                   Gender *
                 </label>
@@ -286,7 +292,7 @@ function Page() {
                   id="gender"
                   value={gender}
                   onChange={(e) => setGender(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 transition"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-blue-500 transition"
                   required
                 >
                   <option value="">Select gender</option>
@@ -299,7 +305,7 @@ function Page() {
               <div>
                 <label
                   htmlFor="role"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                 >
                   Role *
                 </label>
@@ -307,7 +313,7 @@ function Page() {
                   id="role"
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 transition"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-blue-500 transition"
                   required
                 >
                   <option value="user">User</option>
@@ -319,7 +325,7 @@ function Page() {
                 <div>
                   <label
                     htmlFor="adminKey"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                   >
                     Admin Key *
                   </label>
@@ -329,7 +335,7 @@ function Page() {
                     placeholder="Enter secret admin key"
                     value={adminKey}
                     onChange={(e) => setAdminKey(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 transition"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-blue-500 transition"
                     required
                   />
                 </div>
@@ -337,20 +343,20 @@ function Page() {
             </>
           )}
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-xl">
-              <p className="text-sm text-red-600">{error}</p>
+            <div className="p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl">
+              <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
             </div>
           )}
           {message && (
-            <div className="p-3 bg-green-50 border border-green-200 rounded-xl">
-              <p className="text-sm text-green-600">{message}</p>
+            <div className="p-3 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-xl">
+              <p className="text-sm text-green-600 dark:text-green-400">{message}</p>
             </div>
           )}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-black text-white py-3 px-4 rounded-xl font-semibold hover:bg-gray-800 focus:ring-4 focus:ring-black/20 focus:outline-none transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+            className="w-full bg-black dark:bg-white text-white dark:text-black py-3 px-4 rounded-xl font-semibold hover:bg-gray-800 dark:hover:bg-gray-200 focus:ring-4 focus:ring-black/20 dark:focus:ring-white/20 focus:outline-none transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
           >
             {loading ? (
               <>
@@ -381,7 +387,7 @@ function Page() {
             <button
               type="button"
               onClick={toggleMode}
-              className="text-sm text-blue-600 hover:text-blue-700 font-medium underline"
+              className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium underline"
             >
               {isSignup
                 ? "Already have an account? Log in"

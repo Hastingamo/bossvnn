@@ -52,9 +52,9 @@ export default function ReviewActions({ review, productId }) {
 
   if (editing) {
     return (
-      <div className="mt-4 border-t pt-4">
+      <div className="mt-4 border-t dark:border-gray-800 pt-4">
         {message && (
-          <div className={`p-3 rounded mb-4 ${messageType === "success" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
+          <div className={`p-3 rounded mb-4 ${messageType === "success" ? "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400" : "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400"}`}>
             {message}
           </div>
         )}
@@ -65,24 +65,24 @@ export default function ReviewActions({ review, productId }) {
                 key={star}
                 type="button"
                 onClick={() => setRating(star)}
-                className={`text-2xl ${star <= rating ? "text-yellow-400" : "text-gray-300"}`}
+                className={`text-2xl ${star <= rating ? "text-yellow-400" : "text-gray-300 dark:text-gray-600"}`}
               >
                 {star <= rating ? "⭐" : "☆"}
               </button>
             ))}
           </div>
-          <label className="text-sm text-gray-600">Rating: {rating}/5</label>
+          <label className="text-sm text-gray-600 dark:text-gray-400 font-medium">Rating: {rating}/5</label>
           <textarea
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            className="border p-2 w-full rounded"
+            className="border dark:border-gray-700 p-2 w-full rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
             rows={3}
           />
           <div className="flex gap-2">
             <button
               type="submit"
               disabled={loading}
-              className="bg-black text-white px-4 py-2 rounded"
+              className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded hover:opacity-80 transition disabled:opacity-50 font-medium"
             >
               {loading ? "Saving..." : "Save"}
             </button>
@@ -94,7 +94,7 @@ export default function ReviewActions({ review, productId }) {
                 setComment(review.comment);
                 setMessage("");
               }}
-              className="border px-4 py-2 rounded text-gray-600 hover:bg-gray-100"
+              className="border dark:border-gray-700 px-4 py-2 rounded text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
             >
               Cancel
             </button>
@@ -108,14 +108,14 @@ export default function ReviewActions({ review, productId }) {
     <div className="flex gap-2 mt-2">
       <button
         onClick={() => setEditing(true)}
-        className="text-sm text-blue-500 hover:underline"
+        className="text-sm text-blue-500 dark:text-blue-400 hover:underline font-medium"
       >
         Edit
       </button>
       <button
         onClick={handleDelete}
         disabled={loading}
-        className="text-sm text-red-500 hover:underline"
+        className="text-sm text-red-500 dark:text-red-400 hover:underline font-medium"
       >
         {loading ? "Deleting..." : "Delete"}
       </button>
