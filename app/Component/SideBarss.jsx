@@ -23,18 +23,20 @@ const SideBarss = () => {
     { name: "Profile", path: "/Profile", icon: <User size={20} /> },
     { name: "News", path: "/News", icon: <NewspaperIcon size={20} /> },
     { name: "Community", path: "/Community", icon: <Heart size={20} /> },
-    { name: "Register", path: "/SignUp", icon:<GlassWater size={20}/>},
-          { name: "Admin", path: "/Admin", icon:<GlassWater size={20}/>}
+    { name: "Register", path: "/SignUp", icon: <GlassWater size={20} /> },
+    { name: "Admin", path: "/Admin", icon: <GlassWater size={20} /> }
+
 
   ];
 
    const [isOpen, setIsOpen] = useState(false);
   return (
+
     <>
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed top-5 right-5 z-50 bg-gray-900 p-2 rounded-lg text-white shadow-lg"
+          className="fixed top-5 right-5 z-50 bg-gray-900 dark:bg-gray-900 p-2 rounded-lg text-white shadow-lg"
         >
           <Menu />
         </button>
@@ -46,7 +48,7 @@ const SideBarss = () => {
         ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-700">
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
           <Image
             src="/Image/bossvnnlogo.png"
             alt="logo"
