@@ -80,8 +80,8 @@ export default function ReviewForm({ productId }) {
 
   if (hasReviewed) {
     return (
-      <div className="w-full max-w-md mx-auto border-2 p-6 shadow-lg rounded-lg">
-        <p className="text-yellow-700 bg-yellow-50 p-3 rounded">
+      <div className="w-full max-w-md mx-auto border-2 p-6 shadow-lg rounded-lg dark:bg-gray-900 dark:border-gray-800">
+        <p className="text-yellow-700 bg-yellow-50 p-3 rounded dark:bg-yellow-900/30 dark:text-yellow-200">
           You have already reviewed this product.
         </p>
       </div>
@@ -89,9 +89,9 @@ export default function ReviewForm({ productId }) {
   }
 
   return (
-    <div className="w-full max-w-md mx-auto border-2 p-6 shadow-lg rounded-lg">
+    <div className="w-full max-w-md mx-auto border-2 p-6 shadow-lg rounded-lg dark:bg-gray-900 dark:border-gray-800">
       {message && (
-        <div className={`p-3 rounded ${messageType === "success" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"} mb-4`}>
+        <div className={`p-3 rounded ${messageType === "success" ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200" : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300"} mb-4`}>
           {message}
         </div>
       )}
@@ -103,23 +103,23 @@ export default function ReviewForm({ productId }) {
               key={star}
               type="button"
               onClick={() => setRating(star)}
-              className={`text-2xl ${star <= rating ? "text-yellow-400" : "text-gray-300"}`}
+              className={`text-2xl ${star <= rating ? "text-yellow-400" : "text-gray-300 dark:text-gray-600"}`}
             >
     {star <= rating ? "⭐" : "☆"}
             </button>
           ))}
         </div>
-        <label>Rating: {rating}/5</label>
+        <label className="dark:text-white">Rating: {rating}/5</label>
         <textarea
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           placeholder="Write your review..."
-          className="border p-2 w-full"
+          className="border p-2 w-full dark:bg-gray-800 dark:border-gray-700 dark:text-white"
         />
         <button
           type="submit"
           disabled={loading}
-          className="bg-black text-white px-4 py-2"
+          className="bg-black text-white px-4 py-2 rounded dark:bg-white dark:text-black"
         >
           {loading ? "Submitting..." : "Submit Review"}
         </button>
