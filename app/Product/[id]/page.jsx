@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import Revie from "./Reviews/Revie";
+import ReviewComponent from "./Reviews/ReviewComponent";
 
 export default async function Page({ params }) {
   const { id } = await params;
@@ -32,7 +32,7 @@ export default async function Page({ params }) {
         View All Reviews
       </Link>
 
-      <div className="grid grid-cols-1 gap-8 w-full md:w-2/4 bg-[#GE88bB0]">
+      <div className="grid grid-cols-1 gap-8 w-full md:w-2/4 bg-[#E88B00]">
         <div className="border-2 p-8 shadow-lg rounded-xl bg-white flex flex-col items-center justify-center h-[200px]">
           {coin && (
             <div className="text-center">
@@ -55,7 +55,7 @@ export default async function Page({ params }) {
         <div className="border-2 p-8 shadow-lg rounded-xl bg-white h-fit overflow-y-hidden">
           <h2 className="text-xl font-bold mb-6 border-b pb-2">Reviews for this Coin</h2>
           <div className="max-h-[600px] overflow-y-auto">
-            <Revie params={params} />
+            <ReviewComponent params={params} />
           </div>
         </div>
       </div>
