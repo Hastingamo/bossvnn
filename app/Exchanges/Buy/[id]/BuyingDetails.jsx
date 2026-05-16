@@ -1,163 +1,253 @@
 "use client";
-import React, { useState, useEffect } from 'react'; 
-import { supabase } from '../../../lib/Client';
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { supabase } from "../../../lib/Client";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  show: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.07, duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+  }),
+};
+
+const StatusBadge = ({ status }) => {
+  const config = {
+    completed:  { color: "#4ade80", bg: "rgba(74,222,128,0.12)",  border: "rgba(74,222,128,0.25)",  dot: "#4ade80", label: "Completed" },
+    pending:    { color: "#fbbf24", bg: "rgba(251,191,36,0.12)",   border: "rgba(251,191,36,0.25)",   dot: "#fbbf24", label: "Pending" },
+    processing: { color: "#60a5fa", bg: "rgba(96,165,250,0.12)",   border: "rgba(96,165,250,0.25)",   dot: "#60a5fa", label: "Processing" },
+    failed:     { color: "#f87171", bg: "rgba(248,113,113,0.12)",  border: "rgba(248,113,113,0.25)",  dot: "#f87171", label: "Failed" },
+    cancelled:  { color: "#9ca3af", bg: "rgba(156,163,175,0.12)", border: "rgba(156,163,175,0.25)", dot: "#9ca3af", label: "Cancelled" },
+  };
+  const c = config[status] || { color: "#9ca3af", bg: "rgba(156,163,175,0.1)", border: "rgba(156,163,175,0.2)", dot: "#9ca3af", label: status };
+
+  return (
+    <motion.span
+      initial={{ scale: 0.85, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+        background: c.bg,
+        border: `1px solid ${c.border}`,
+        color: c.color,
+        borderRadius: 999,
+        padding: "3px 12px",
+        fontSize: 12,
+        fontWeight: 700,
+        letterSpacing: "0.05em",
+        textTransform: "uppercase",
+      }}
+    >
+      <motion.span
+        style={{ width: 7, height: 7, borderRadius: "50%", background: c.dot, display: "inline-block" }}
+        animate={status === "pending" || status === "processing" ? { opacity: [1, 0.3, 1] } : {}}
+        transition={{ repeat: Infinity, duration: 1.4 }}
+      />
+      {c.label}
+    </motion.span>
+  );
+};
+
+const InfoRow = ({ label, value, index }) => (
+  <motion.div
+    variants={fadeUp}
+    custom={index}
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      gap: 2,
+      padding: "14px 0",
+      borderBottom: "1px solid rgba(255,255,255,0.06)",
+    }}
+  >
+    <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: "0.12em", color: "#6b7280", textTransform: "uppercase" }}>
+      {label}
+    </span>
+    <span style={{ fontSize: 16, fontWeight: 600, color: "#f1f5f9" }}>{value || "—"}</span>
+  </motion.div>
+);
+
+const BankCard = ({ field, index }) => (
+  <motion.div
+    variants={fadeUp}
+    custom={index}
+    style={{
+      display: "flex",
+      alignItems: "center",
+      background: "rgba(255,255,255,0.04)",
+      border: "1.5px solid rgba(255,255,255,0.08)",
+      borderRadius: 14,
+      padding: "14px 18px",
+    }}
+  >
+    <div>
+      <p style={{ fontSize: 10, fontWeight: 800, letterSpacing: "0.12em", color: "#6b7280", textTransform: "uppercase", marginBottom: 4 }}>
+        {field.label}
+      </p>
+      <p style={{ fontSize: 15, fontWeight: 700, color: "#e2e8f0" }}>{field.value}</p>
+    </div>
+  </motion.div>
+);
 
 export default function BuyingDetails({ transfer, username }) {
   const [status, setStatus] = useState(transfer?.status);
   const [amount, setAmount] = useState("");
-  const [loading, setLoading] = useState(false); 
-  const bankDetails = {
-    bankName: "Access Bank",
-    accountNumber: "0123456789",
-    accountName: "BossVNN Exchange",
-  };
+
+  const bankDetails = [
+    { label: "Bank Name",      value: "Access Bank",      key: "bank" },
+    { label: "Account Number", value: "0123456789",       key: "number" },
+    { label: "Account Name",   value: "BossVNN Exchange", key: "name" },
+  ];
 
   useEffect(() => {
     const storedAmount = localStorage.getItem("cryptoAmount");
-    if (storedAmount) {
-      setAmount(JSON.parse(storedAmount));
-    }
+    if (storedAmount) setAmount(JSON.parse(storedAmount));
   }, []);
 
-  const handleProcess = async () => {
-    setLoading(true);
-
-    const { error } = await supabase
-      .from("transfer")
-      .update({ status: "completed" })
-      .eq("id", transfer.id);
-
-    if (error) {
-      console.error("Error updating transaction status:", error);
-      alert("Failed to update transaction status. Please try again.");
-    } else {
-      await supabase.channel(`transaction-${transfer.id}`).send({
-        type: "broadcast",
-        event: "status_update",
-        payload: { status: "completed" },
-      });
-      setStatus("completed");
-    }
-
-    setLoading(false);
-  };
-
-  const statusColor =
-    status === "completed"
-      ? "text-green-600"
-      : status === "pending"
-        ? "text-yellow-600"
-        : status === "processing"
-          ? "text-blue-600"
-          : status === "failed"
-            ? "text-red-600"
-            : status === "cancelled"
-              ? "text-gray-400"
-              : "text-gray-600";
-
   return (
-    <div className="p-8 border rounded-xl shadow-lg bg-white">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">{username}</h2>
-        <p className="text-sm text-gray-500">
-          Transaction ID: {transfer?.id}
-        </p>
-        <p className="text-sm text-gray-500">
-          Status:{" "}
-          <span className={`font-semibold capitalize ${statusColor}`}>
-            {status}
-          </span>
-        </p>
-      </div>
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+      style={{
+        maxWidth: 820,
+        margin: "0 auto",
+        fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif",
+        background: "#0f1117",
+        borderRadius: 24,
+        boxShadow: "0 8px 48px 0 rgba(0,0,0,0.5), 0 1px 2px 0 rgba(0,0,0,0.4)",
+        overflow: "hidden",
+        border: "1px solid rgba(255,255,255,0.07)",
+      }}
+    >
+      <motion.div
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        style={{
+          height: 5,
+          background: "linear-gradient(90deg, #6366f1, #8b5cf6, #06b6d4)",
+          transformOrigin: "left",
+        }}
+      />
 
-      {status === "completed" && (
-        <div className="w-full bg-green-50 border border-green-200 text-green-700 py-3 px-4 rounded-xl text-center font-semibold">
-          ✓ Your transaction has been confirmed!
-        </div>
-      )}
-
-      <div className="">
-        <p className="text-lg font-semibold py-2">
-          <span className="text-xs md:text-[16px] text-muted-foreground uppercase font-bold">
-            account number:
-          </span>{" "}
-          {transfer?.account_number}
-        </p>
-        <p className="text-lg font-semibold">
-          <span className="text-xs md:text-[16px] text-muted-foreground uppercase font-bold">
-            account name:
-          </span>{" "}
-          {transfer?.account_name}
-        </p>
-        <p className="text-lg font-semibold">
-          <span className="text-xs md:text-[16px] text-muted-foreground uppercase font-bold">
-            Bank Name:
-          </span>{" "}
-          {transfer?.bank_name}
-        </p>
-        <p className="text-sm">
-          <span className="text-xs md:text-[16px] text-muted-foreground uppercase font-bold">
-            Total $:
-          </span>{" "}
-          {amount} {transfer?.currency}
-        </p>
-        <p className="text-sm">
-          <span className="text-xs md:text-[16px] text-muted-foreground uppercase font-bold">
-            Currency:
-          </span>{" "}
-          {transfer?.currency}
-        </p>
-        <p className="text-sm">
-          <span className="text-xs md:text-[16px] text-muted-foreground uppercase font-bold">
-            Comment:
-          </span>{" "}
-          {transfer?.comment}
-        </p>
-
-        <div className="grid gap-4">
-          {[
-            { label: "Bank Name", value: bankDetails.bankName, key: "bank" },
-            { label: "Account Number", value: bankDetails.accountNumber, key: "number" },
-            { label: "Account Name", value: bankDetails.accountName, key: "name" },
-          ].map((field) => (
-            <div
-              key={field.key}
-              className="flex items-center justify-between bg-background hover:border-blue-500/50 transition-colors group"
-            >
-              <div>
-                <p className="text-xs text-muted-foreground uppercase font-bold">
-                  {field.label}
-                </p>
-                <p className="text-lg font-semibold">{field.value}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-{/* 
-        <button
-          onClick={handleProcess}
-          disabled={loading || status === "completed"}
-          className="w-full bg-black text-white py-3 px-4 rounded-xl font-semibold hover:bg-gray-800 focus:ring-4 focus:ring-black/20 focus:outline-none transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 mt-4"
+      <div style={{ padding: "32px 32px 28px" }}>
+        <motion.div
+          initial="hidden"
+          animate="show"
+          variants={{ show: { transition: { staggerChildren: 0.07 } } }}
+          style={{ marginBottom: 28 }}
         >
-          {loading ? (
-            <>
-              <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" opacity=".25" />
-                <path fill="currentColor" opacity=".75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-              </svg>
-              <span>Processing...</span>
-            </>
-          ) : status === "completed" ? ( 
-            "✓ Transaction Processed"
-          ) : (
-            "Process Transaction"
-          )}
-        </button> */}
+          <motion.div
+            variants={fadeUp}
+            style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}
+          >
+            <div>
+              <h2 style={{ fontSize: 22, fontWeight: 800, color: "#f8fafc", margin: 0, letterSpacing: "-0.02em" }}>
+                {username}
+              </h2>
+              <p style={{ fontSize: 12, color: "#4b5563", marginTop: 4, fontFamily: "monospace" }}>
+                ID: {transfer?.id}
+              </p>
+            </div>
+            <StatusBadge status={status} />
+          </motion.div>
 
-        <p className="text-sm text-gray-500 mt-4">
-          Created: {new Date(transfer?.created_at).toLocaleString()}
-        </p>
+          <AnimatePresence>
+            {status === "completed" && (
+              <motion.div
+                initial={{ opacity: 0, height: 0, y: -10 }}
+                animate={{ opacity: 1, height: "auto", y: 0 }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                style={{
+                  background: "rgba(74,222,128,0.08)",
+                  border: "1.5px solid rgba(74,222,128,0.2)",
+                  borderRadius: 12,
+                  padding: "12px 18px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  marginTop: 4,
+                }}
+              >
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", stiffness: 300, delay: 0.15 }}
+                  style={{ fontSize: 20 }}
+                >
+                  🎉
+                </motion.span>
+                <span style={{ fontSize: 14, fontWeight: 700, color: "#4ade80" }}>
+                  Your transaction has been confirmed!
+                </span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          style={{ borderBottom: "1.5px dashed rgba(255,255,255,0.07)", marginBottom: 6 }}
+        />
+
+        <motion.div
+          initial="hidden"
+          animate="show"
+          variants={{ show: { transition: { staggerChildren: 0.07, delayChildren: 0.15 } } }}
+        >
+          <InfoRow label="Account Number" value={transfer?.account_number} index={0} />
+          <InfoRow label="Account Name"   value={transfer?.account_name}   index={1} />
+          <InfoRow label="Bank Name"      value={transfer?.bank_name}      index={2} />
+          <InfoRow label={`Total (${transfer?.currency || "USD"})`} value={`${amount} ${transfer?.currency || ""}`} index={3} />
+          <InfoRow label="Currency"       value={transfer?.currency}       index={4} />
+          <InfoRow label="Comment"        value={transfer?.comment}        index={5} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.45, duration: 0.4 }}
+          style={{ marginTop: 24 }}
+        >
+          <p style={{
+            fontSize: 10,
+            fontWeight: 800,
+            letterSpacing: "0.14em",
+            color: "#818cf8",
+            textTransform: "uppercase",
+            marginBottom: 12,
+          }}>
+            paid to this account
+          </p>
+          <motion.div
+            initial="hidden"
+            animate="show"
+            variants={{ show: { transition: { staggerChildren: 0.08, delayChildren: 0.5 } } }}
+            style={{ display: "flex", flexDirection: "column", gap: 10 }}
+          >
+            {bankDetails.map((field, i) => (
+              <BankCard key={field.key} field={field} index={i} />
+            ))}
+          </motion.div>
+        </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.75 }}
+          style={{ fontSize: 11, color: "#374151", textAlign: "center", marginTop: 24 }}
+        >
+          Created {new Date(transfer?.created_at).toLocaleString()}
+        </motion.p>
       </div>
-    </div>
+    </motion.div>
   );
 }

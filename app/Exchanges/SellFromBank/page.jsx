@@ -40,6 +40,7 @@ const NIGERIAN_BANKS = [
 ];
 
 function Page() {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [bankName, setBankName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
@@ -188,8 +189,13 @@ function Page() {
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold">Sell From Bank</h1>
-      <p className="mt-4 text-gray-600">This is the Sell From Bank page.</p>
-      <div className="max-w-6xl mx-auto">
+      <button
+        onClick={() => router.back()}
+        className="mb-4 flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 transition"
+      >
+        <ArrowLeft size={16} />
+        Back
+      </button>      <div className="max-w-6xl mx-auto">
         <div className="w-full max-w-4xl mx-auto border border-border bg-secondary/10 rounded-3xl overflow-hidden shadow-2xl">
           <form className="p-8 relative" onSubmit={handleForm}>
             <h2 className="text-2xl font-bold mb-6">Sell from Bank</h2>

@@ -23,7 +23,6 @@ const items = {
 export default function CommunityUI() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#e1cbd7] to-[#b6abcf] flex flex-col items-center py-16 px-4">
-      {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

@@ -38,8 +38,7 @@ export default function FromBank() {
   const isWalletAddress = (wAD) =>
     wAD.length >= 26 && /[A-Z]/.test(wAD) && /[a-z]/.test(wAD);
 
-        const isTotal = (isT) =>
-    isT >= 100;
+  const isTotal = (isT) => isT >= 100;
   useEffect(() => {
     if (!currency || !cryptoAmount) return;
 
@@ -54,23 +53,13 @@ export default function FromBank() {
         );
         if (found) {
           setCoin(found);
+
           const pricePerUnit = found.current_price;
+          const ngnAmount = parseFloat(cryptoAmount) * pricePerUnit * 1352;
+          const feeAmount = ngnAmount * 0.13;
 
-          const calculatedNgn = (
-            parseFloat(cryptoAmount) *
-            pricePerUnit *
-            1352 *
-            0.13
-          ).toFixed(2);
-
-          const calculatedFee = (parseFloat(calculatedNgn) * 0.13).toFixed(2);
-          setFee(calculatedFee);
-
-          const totalNgns = (
-            parseFloat(calculatedNgn) + parseFloat(calculatedFee)
-          ).toFixed(2);
-
-          setTotalNgn(totalNgns);
+          setFee(feeAmount.toFixed(2));
+          setTotalNgn((ngnAmount + feeAmount).toFixed(2));
         } else {
           setError("Currency not found: " + currency);
         }
@@ -104,7 +93,7 @@ export default function FromBank() {
       setLoading(false);
       return;
     }
-        if (!isTotal(totalNgn)) {
+    if (!isTotal(totalNgn)) {
       setError("Total must be at least ₦100");
       setLoading(false);
       return;
@@ -145,7 +134,10 @@ export default function FromBank() {
       transition={{ duration: 0.6 }}
       className="bg-background text-foreground w-full h-fit p-4"
     >
-      <button onClick={() => router.back()} className="mb-4 flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 transition">
+      <button
+        onClick={() => router.back()}
+        className="mb-4 flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 transition"
+      >
         <ArrowLeft size={16} />
         Back
       </button>
@@ -239,13 +231,15 @@ export default function FromBank() {
                         <span>Total</span>
                         <span>₦{Number(totalNgn).toLocaleString()}</span>
                       </div>
-                                          {totalNgn && (
-                  <p className={`text-xs mt-1 ${isTotal(totalNgn) ? "text-green-600" : "text-orange-600"}`}>
-                    {isTotal(totalNgn)
-                      ? "Valid total amount"
-                      : "Total must be at least ₦100"}
-                  </p>
-                )}
+                      {totalNgn && (
+                        <p
+                          className={`text-xs mt-1 ${isTotal(totalNgn) ? "text-green-600" : "text-orange-600"}`}
+                        >
+                          {isTotal(totalNgn)
+                            ? "Valid total amount"
+                            : "Total must be at least ₦100"}
+                        </p>
+                      )}
                     </>
                   ) : (
                     <span className="text-gray-400 text-sm">

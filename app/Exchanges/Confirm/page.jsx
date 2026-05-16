@@ -29,7 +29,7 @@ export default async function Page() {
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold mb-4">History of Coin  {username} have bought</h1>
-      <Link href="/Exchanges/Buy" className="text-blue-500 hover:underline mb-6 inline-block"> thr buy</Link>
+      <Link href="/Exchanges/Buy" className="text-blue-500 hover:underline mb-6 inline-block"> coin you sold </Link>
         {!transactions || transactions.length === 0 ? (
           <p>No transactions yet.</p>
         ) : (
