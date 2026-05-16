@@ -1,14 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../../lib/Client";
 import { Lock } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function ResetPassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sessionReady, setSessionReady] = useState(false);
+  const router = useRouter();
+  useEffect(() => {
+    const checkSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        router.replace("/");
+      } else {
+        setSessionReady(true);
+      }
+    };
+    checkSession();
+  }, [router]);
 
   const handleUpdate = async () => {
     setMessage("");
@@ -45,16 +61,21 @@ export default function ResetPassword() {
     setLoading(false);
   };
 
+  if (!sessionReady) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-950">
+        <p className="text-gray-500 dark:text-gray-400 text-sm">
+          Verifying access...
+        </p>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-950 px-4 transition-colors">
       <div className="w-full max-w-md bg-white dark:bg-gray-900 shadow-xl rounded-2xl p-8">
-        
         <div className="flex flex-col items-center mb-6">
           <div className="p-4 rounded-full bg-blue-100 dark:bg-blue-900">
-            <Lock
-              size={28}
-              className="text-blue-600 dark:text-blue-300"
-            />
+            <Lock size={28} className="text-blue-600 dark:text-blue-300" />
           </div>
 
           <h1 className="mt-4 text-2xl font-bold text-gray-800 dark:text-white">
@@ -67,7 +88,6 @@ export default function ResetPassword() {
         </div>
 
         <div className="space-y-4">
-
           <input
             type="password"
             placeholder="New password"
@@ -88,9 +108,7 @@ export default function ResetPassword() {
             type="password"
             placeholder="Confirm password"
             value={confirmPassword}
-            onChange={(e) =>
-              setConfirmPassword(e.target.value)
-            }
+            onChange={(e) => setConfirmPassword(e.target.value)}
             className="
               w-full p-3 rounded-xl
               border border-gray-300
@@ -120,9 +138,7 @@ export default function ResetPassword() {
           {message && (
             <p
               className={`text-sm text-center ${
-                message.includes("success")
-                  ? "text-green-500"
-                  : "text-red-500"
+                message.includes("success") ? "text-green-500" : "text-red-500"
               }`}
             >
               {message}
