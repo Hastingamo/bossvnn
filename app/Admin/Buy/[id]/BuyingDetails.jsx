@@ -246,7 +246,7 @@ export default function BuyingDetails({ transfer, username }) {
             textTransform: "uppercase",
             marginBottom: 12,
           }}>
-            Pay to this account
+            paid to this account
           </p>
           <motion.div
             initial="hidden"

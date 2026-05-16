@@ -5,7 +5,7 @@ import { useTheme } from "next-themes";
 import { Sun, Moon } from "lucide-react";
 import Image from "next/image";
 import SideBarss from "./SideBarss";
-
+import ExchangeModal from "./ExchangeModal";
 function Headerss() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -40,10 +40,13 @@ function Headerss() {
         <Link href="/Admin">
         <h1>Admin</h1>
         </Link>
-
-            <Link href="/Exchanges">
-          <h1>Exchange rate page</h1>
-        </Link>
+<ExchangeModal
+          label="Product"
+          items={[
+            { label: "exchange", href: "/Exchanges" },
+            { label: "exchange history", href: "/Exchanges/Confirm" },
+          ]}
+        /> 
         <Link href="/Community">
           <h1>Community page</h1>
         </Link>
